@@ -1,0 +1,35 @@
+
+.dropdown-menu {
+  min-width: 200px; /* Setează lățimea minimă */
+  text-align: left;
+  font-family: 'Times New Roman', Times, serif/* Opțional, pentru centrarea textului */
+}
+.books {
+    font-size: 200px;
+
+
+  }
+
+  .books_div {
+    padding-top: 90px;
+    padding-left: 10px;
+
+  }
+  .BigTitle{
+    padding-top: 30px;
+    padding-bottom: 30px;
+    font-family: "Ink Free", cursive;
+    font-weight: bold
+
+  }
+  .card-text{
+    font-family: "Ink Free", cursive;
+    
+  }
+  .card-title{
+    font-family: 'Times New Roman', Times, serif;
+  }
+  .r-link{
+    padding-left: 20px;
+    
+  }

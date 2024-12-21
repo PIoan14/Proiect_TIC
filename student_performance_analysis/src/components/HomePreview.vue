@@ -40,10 +40,10 @@
           <span class="books">&#128393;</span>
         </div>
             </div>
-            <div class="main-content col-md-10 col-sm-10">
+            <div class="main-content col-md-10 col-sm-10" >
                 <h1 class= "BigTitle">Carduri pentru optiuni</h1>
                 <div class="row">
-                    <div class="card m-2" style="width: 18rem;">
+                    <div class="card m-2" style="width: 18rem">
                         <div class="card-body">
                           <h5 class="card-title">Vezi toti studentii</h5>
                           <h6 class="card-subtitle mb-2 text-muted">...</h6>

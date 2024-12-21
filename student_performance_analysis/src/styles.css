@@ -33,3 +33,20 @@
     padding-left: 20px;
     
   }
+
+  .setari{
+    padding-left: 50px;
+  }
+
+  .card{
+    
+  
+    width: 20rem;
+    
+  
+  }
+  .statusProfil{
+    
+    display: flex; /* Activează Flexbox */
+    justify-content: center;
+  }

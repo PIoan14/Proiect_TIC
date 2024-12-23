@@ -15,7 +15,7 @@
             Dropdown Link
           </a>
           <ul class="dropdown-menu">
-            <li><router-link class="r-link" to="/">Acasa</router-link></li>
+            <li><router-link class="r-link" to="/home">Acasa</router-link></li>
             <li><router-link class="r-link" to="/AdaugaStudent">Adauga student</router-link></li>
             <li><router-link class="r-link" to="/Analitice">Analitice</router-link></li>
             <li><router-link class="r-link" to="/CautaStudent">Cauta elev</router-link></li>
@@ -35,13 +35,17 @@
 </div>
     <div class="container-fluid">
         <div class = "row">
-            <div class="sidebar col-md-2 col-sm-2">
+            <div class="sidebar col-md-4 col-sm-4">
+            <div>
+              <p style="padding-top: 150px;padding-right: 50px; font-family: Ink Free; ">O pagină de intrare într-o aplicație de monitorizare a studenților este punctul de acces principal pentru utilizatori, oferind o interfață simplă și intuitivă. Aceasta include câmpuri pentru autentificare, precum adresa de email și parola, și poate oferi opțiuni suplimentare, 
+                cum ar fi "Am uitat parola" sau "Înregistrare" pentru utilizatorii noi.</p>
+            </div>
                 <div class="books_div">
           <span class="books">&#128393;</span>
         </div>
             </div>
-            <div class="main-content col-md-10 col-sm-10" >
-                <h1 class= "BigTitle">Carduri pentru optiuni</h1>
+            <div class="main-content col-md-8 col-sm-8" >
+                <div class = "BigTitle">Carduri pentru optiuni</div>
                 <div class="row">
                     <div class="card m-2" style="width: 18rem">
                         <div class="card-body">

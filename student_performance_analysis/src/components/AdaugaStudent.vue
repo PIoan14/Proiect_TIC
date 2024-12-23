@@ -14,7 +14,7 @@
             Dropdown link
           </a>
           <ul class="dropdown-menu">
-            <li><router-link class="r-link" to="/">Acasa</router-link></li>
+            <li><router-link class="r-link" to="/home">Acasa</router-link></li>
             <li><router-link class="r-link" to="/AdaugaStudent">Adauga student</router-link></li>
             <li><router-link class="r-link" to="/Analitice">Analitice</router-link></li>
             <li><router-link class="r-link" to="/CautaStudent">Cauta elev</router-link></li>

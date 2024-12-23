@@ -27,7 +27,7 @@
                 Dropdown link
               </a>
               <ul class="dropdown-menu">
-                <li><router-link class="r-link" to="/">Acasa</router-link></li>
+                <li><router-link class="r-link" to="/home">Acasa</router-link></li>
                 <li>
                   <router-link class="r-link" to="/AdaugaStudent"
                     >Adauga student</router-link
@@ -98,10 +98,11 @@
                       class="form-control"
                       placeholder="Username"
                       aria-label="Username"
+                      v-model="newName"
                       aria-describedby="basic-addon1"
                     />
                   </div>
-                  <button type="button" class="btn btn-dark">Dark</button>
+                  <button @click="updateUserName()" type="button" class="btn btn-dark">Dark</button>
 
                 </div>
               </div>
@@ -113,6 +114,7 @@
                     <input
                       placeholder="Parola noua"
                       type="text"
+                      v-model = "parola"
                       class="form-control"
                       aria-label="Amount (to the nearest dollar)"
                     />
@@ -124,7 +126,7 @@
               <div class="card m-2" style="width: 20rem">
                 <div class="card-body">
                   <h5 class="card-title">Status</h5>
-                  <p class="card-text">Username actual : .</p>
+                  <p class="card-text">Username actual :{{ user?.email || 'Nicio informație' }}</p>
                 </div>
                 
               </div>
@@ -140,8 +142,62 @@
   </div>
 </template>
 <script>
+
+import { getAuth, updateEmail, reauthenticateWithCredential, EmailAuthProvider } from "firebase/auth";
 export default {
   name: "SetariProfil",
   setup() {},
+  data(){
+    return{
+       newName : "",
+       parola:""
+
+    }
+   
+    
+  },
+  computed: {
+    user() {
+      return this.$store.getters.getUser; // Accesare utilizator din store
+    },
+  },
+  methods: {
+    async updateUserName() {
+      const auth = getAuth();
+      const user = auth.currentUser;
+      console.log(this.$store.getters.getUser)
+     
+
+      if (user && this.newName.trim() && this.parola.trim()) {
+        try {
+          console.log("Vechi nume este:", user.email);
+          const credential = EmailAuthProvider.credential(user.email, this.parola);
+          await reauthenticateWithCredential(user, credential);
+          console.log(this.newName)
+          await updateEmail(user, this.newName);
+
+         
+          await user.reload();
+          console.log("Noul nume este:", user.email);
+          alert("Username schimbat!")
+          this.$store.dispatch("updateUser", {
+            ...user,
+            displayName: this.newName,
+          });
+          console.log( this.newName)
+          
+         
+        } catch (error) {
+          alert("error")
+          
+        }
+      } else {
+        alert("introdu nume valid!")
+      }
+    }
+  }
+
+  
+  
 };
 </script>

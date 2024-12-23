@@ -1,17 +1,22 @@
-
+body{
+  background-color: 
+  rgb(213, 234, 236);
+}
 .dropdown-menu {
-  min-width: 200px; /* Setează lățimea minimă */
+  min-width: 200px; /* Setează lățimea minimă  background-color: rgb(199, 231, 233);*/
   text-align: left;
   font-family: 'Times New Roman', Times, serif/* Opțional, pentru centrarea textului */
 }
 .books {
-    font-size: 200px;
+    font-size: 250px;
 
 
   }
 
+
+
   .books_div {
-    padding-top: 90px;
+    padding-top: 50px;
     padding-left: 10px;
 
   }
@@ -19,15 +24,20 @@
     padding-top: 30px;
     padding-bottom: 30px;
     font-family: "Ink Free", cursive;
-    font-weight: bold
-
+    font-weight: bold;
+    text-align: left;
+    font-size: 40px;
+   
   }
   .card-text{
     font-family: "Ink Free", cursive;
+    font-weight: bold;
     
   }
   .card-title{
     font-family: 'Times New Roman', Times, serif;
+    font-style: italic;
+    
   }
   .r-link{
     padding-left: 20px;

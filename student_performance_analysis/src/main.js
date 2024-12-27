@@ -13,7 +13,7 @@ import StergeCont from './components/StergeCont.vue';
 import loginApp from './components/loginApp.vue';
 import signUpApp from './components/signUpApp.vue';
 // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
+import { initializeApp} from "firebase/app";
 import { store } from './store';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -35,6 +35,7 @@ initializeApp(firebaseConfig);
 
 import { createRouter, createWebHistory } from 'vue-router';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
+
 const auth = getAuth()
 const route = createRouter({
     history: createWebHistory(),

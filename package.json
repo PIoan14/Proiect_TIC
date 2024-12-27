@@ -1,6 +1,8 @@
 {
   "dependencies": {
+    "express": "^4.21.2",
     "firebase": "^11.1.0",
+    "firebase-admin": "^13.0.2",
     "vuex": "^4.1.0",
     "vuex-persistedstate": "^4.1.0"
   }

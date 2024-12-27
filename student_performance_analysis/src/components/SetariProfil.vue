@@ -27,7 +27,9 @@
                 Dropdown link
               </a>
               <ul class="dropdown-menu">
-                <li><router-link class="r-link" to="/home">Acasa</router-link></li>
+                <li>
+                  <router-link class="r-link" to="/home">Acasa</router-link>
+                </li>
                 <li>
                   <router-link class="r-link" to="/AdaugaStudent"
                     >Adauga student</router-link
@@ -102,8 +104,13 @@
                       aria-describedby="basic-addon1"
                     />
                   </div>
-                  <button @click="updateUserName()" type="button" class="btn btn-dark">Dark</button>
-
+                  <button
+                    @click="updateUserName()"
+                    type="button"
+                    class="btn btn-dark"
+                  >
+                    Dark
+                  </button>
                 </div>
               </div>
               <div class="card m-2" style="width: 20rem">
@@ -114,7 +121,7 @@
                     <input
                       placeholder="Parola noua"
                       type="text"
-                      v-model = "parola"
+                      v-model="parola"
                       class="form-control"
                       aria-label="Amount (to the nearest dollar)"
                     />
@@ -126,9 +133,10 @@
               <div class="card m-2" style="width: 20rem">
                 <div class="card-body">
                   <h5 class="card-title">Status</h5>
-                  <p class="card-text">Username actual :{{ user?.email || 'Nicio informație' }}</p>
+                  <p class="card-text">
+                    Username actual :{{ user?.email || "Nicio informație" }}
+                  </p>
                 </div>
-                
               </div>
             </div>
           </div>
@@ -142,19 +150,21 @@
   </div>
 </template>
 <script>
-
-import { getAuth, updateEmail, reauthenticateWithCredential, EmailAuthProvider } from "firebase/auth";
+import {
+  getAuth,
+  updateEmail,
+  reauthenticateWithCredential,
+  EmailAuthProvider,
+  sendEmailVerification,
+} from "firebase/auth";
 export default {
   name: "SetariProfil",
   setup() {},
-  data(){
-    return{
-       newName : "",
-       parola:""
-
-    }
-   
-    
+  data() {
+    return {
+      newName: "",
+      parola: "",
+    };
   },
   computed: {
     user() {
@@ -165,39 +175,54 @@ export default {
     async updateUserName() {
       const auth = getAuth();
       const user = auth.currentUser;
-      console.log(this.$store.getters.getUser)
-     
+      console.log(this.$store.getters.getUser);
 
       if (user && this.newName.trim() && this.parola.trim()) {
         try {
           console.log("Vechi nume este:", user.email);
-          const credential = EmailAuthProvider.credential(user.email, this.parola);
+          const credential = EmailAuthProvider.credential(
+            user.email,
+            this.parola
+          );
           await reauthenticateWithCredential(user, credential);
-          console.log(this.newName)
+          console.log("User reauthenticated.");
+          const actionCodeSettings = {
+            // URL-ul la care utilizatorul va fi redirecționat după ce confirmă email-ul
+            url: "http://localhost:8080/", // Asigură-te că această pagină există
+            handleCodeInApp: true, // Permite ca link-ul să fie manipulabil în aplicația ta
+          };
+
+          try {
+            await sendEmailVerification(user, actionCodeSettings);
+
+            console.log("Sent");
+
+            await new Promise((resolve) => {
+              alert("Verifică-ți email-ul pentru a continua.");
+              resolve();
+            });
+          } catch (error) {
+            alert(error);
+          }
+
           await updateEmail(user, this.newName);
 
-         
           await user.reload();
           console.log("Noul nume este:", user.email);
-          alert("Username schimbat!")
+          alert("Username schimbat!");
           this.$store.dispatch("updateUser", {
             ...user,
             displayName: this.newName,
           });
-          console.log( this.newName)
-          
-         
+          console.log(this.newName);
         } catch (error) {
-          alert("error")
-          
+          alert(`Error: ${error.message}`);
+          console.error("Error details:", error);
         }
       } else {
-        alert("introdu nume valid!")
+        alert("introdu nume valid!");
       }
-    }
-  }
-
-  
-  
+    },
+  },
 };
 </script>

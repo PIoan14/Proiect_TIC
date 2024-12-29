@@ -80,19 +80,19 @@
       <div class="row">
         <div class="col-md-2 col-sm-2 text-center"></div>
         <div class="main-content col-md-8 col-sm-8">
-          <div class="BigTitle">Carduri pentru optiuni</div>
+          <div class="BigTitle">Carduri asociate elevilor</div>
           <div class="row">
-          <div v-for="(item, index) in items" :key="index"  class="card m-2" style="width: 18rem">
+          <div v-for="(item, index) in data" :key="index"  class="card m-2" style="width: 18rem">
             <div class="card-body">
               <h5 class="card-title">Card {{ index +1 }}</h5>
               <h6 class="card-subtitle mb-2 text-body-secondary">
-                Card subtitle
+                {{ item.nume_si_prenume }}
               </h6>
               <p class="card-text">
-                Id elev este : {{ data[index] }}
+                Id elev este : {{ item.id_elev}}
+                Email student : {{ item.email }}
               </p>
-              <a href="#" class="card-link">Card link</a>
-              <a href="#" class="card-link">Another link</a>
+              
             </div>
           </div>
         </div>
@@ -109,7 +109,7 @@ export default {
   data(){
     
     
-    return{ items :1,
+    return{ 
       data : []
     } 
   },
@@ -132,15 +132,16 @@ export default {
         })
         .then((data) => {
           console.log(data[0].nume_si_prenume);
-          this.items = data.length
+          
           this.data = data
-          console.log(data)
+          
           console.log(this.data)
+          this.data = JSON.parse(JSON.stringify(this.data));
          
         })
         .catch((error) => {
           console.error("There was a problem with the fetch operation:", error);
-          this.items = 0
+          
         });
     },
    

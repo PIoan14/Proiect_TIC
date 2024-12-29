@@ -189,8 +189,8 @@
   </div>
 </template>
 <script>
-
 import { getAuth } from "firebase/auth";
+import { addStudent } from "./actions.js";
 export default {
   name: "AdaugaElev",
   setup() {},
@@ -217,21 +217,20 @@ export default {
       const user = auth.currentUser;
 
       if (user) {
-        
-            if (user){
-              return user.getIdToken()
-            }
-            else{
-              return null
-            }
+        if (user) {
+          return user.getIdToken();
+        } else {
+          return null;
+        }
       }
     },
     async submitData(event) {
       event.preventDefault();
       console.log(this.student);
-      const token = await this.getToken()
-      console.log(`Avem token : ${token}`)
-      console.log("Suntem la verificare")
+      const token = await this.getToken();
+      console.log(`Avem token : ${token}`);
+      console.log("Suntem la verificare");
+      var check = 1;
 
       await fetch("http://localhost:3000/verif-jwt", {
         method: "POST",
@@ -239,16 +238,27 @@ export default {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`, // Adaugă Bearer tokenul
         },
-        body: JSON.stringify ({ data: ""}),
+        body: JSON.stringify({ data: "" }),
       })
         .then((response) => response.json())
         .then((data) => {
           console.log("Răspuns de la server:", data);
-          alert("Server")
+          alert("Token verificat cu succes");
         })
         .catch((error) => {
           console.error("Eroareee:", error);
+          check = 0;
         });
+
+      try {
+        this.student.id_elev = Number(this.student.id_elev);
+        console.log(this.student.id_elev)
+        if (isNaN(this.student.id_elev)) {
+          throw new Error("Id ul trebuie sa fie un numar!");
+        }
+      } catch (error) {
+        alert(error);
+      }
 
       try {
         this.student.varsta = parseInt(this.student.varsta, 10);
@@ -257,8 +267,41 @@ export default {
             "Conversia la număr a eșuat. Valoarea nu este un număr valid."
           );
         }
+        if (this.student.varsta > 100) {
+          throw new Error("Varsta prea mare");
+        }
       } catch (error) {
-        alert("Varsta trebuie sa fie un numar");
+        check = 0;
+        alert(error);
+      }
+
+      try {
+        if (this.student.email.includes("@")) {
+          console.log("Email ok");
+        } else {
+          throw new Error("Format de email incorect");
+        }
+      } catch (error) {
+        check = 0;
+        alert(error);
+      }
+
+      try {
+        if (this.student.nume_si_prenume.length < 5) {
+          throw new Error(
+            "Numele si prenumele trebuie sa fie mai lungi de 5 caractere!"
+          );
+        }
+      } catch (error) {
+        check = 0;
+        alert(error);
+      }
+      if (check === 1) {
+        addStudent(this.student);
+
+        setTimeout(() => {
+          location.reload();
+        }, 5000);
       }
     },
   },

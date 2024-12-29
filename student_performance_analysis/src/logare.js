@@ -1,5 +1,5 @@
 import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
-import {auth} from "./db.js"
+import {auth} from "./components/db.js"
 
 const loginForm = document.getElementById('login-form');
 

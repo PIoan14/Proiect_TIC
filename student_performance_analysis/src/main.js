@@ -43,7 +43,7 @@ const route = createRouter({
       {
         path: '/home',
         component: HomePreview,
-        meta: { requiresAuth: true }
+       
       },
       {
         path : '/AdaugaStudent',
@@ -98,20 +98,30 @@ const route = createRouter({
       
     ]
   });
+
   route.beforeEach((to, from, next) => {
-    const isAuthenticated = auth.currentUser;
+    const isAuthenticated = !!auth.currentUser; 
+    console.log(isAuthenticated)// Verifică dacă utilizatorul este autentificat
   
-    if (to.meta.requiresAuth && !isAuthenticated) {
-      next({ path: '/' }); // Redirecționează la pagina de autentificare
+    if (!isAuthenticated && to.path !== '/') {
+      console.log("Nu esti logat")
+      
+      next({ path: '/' }); // Redirecționează la pagina de logare
+    } else if (isAuthenticated && to.path === '/') {
+      console.log(isAuthenticated)
+      // Dacă utilizatorul este deja autentificat și încearcă să acceseze pagina de logare
+      next({ path: '/home' }); // Redirecționează către pagina principală
     } else {
       next(); // Permite navigarea
     }
   });
+  
 
   onAuthStateChanged(auth, (user) => {
     if (user) {
       const userData = { email: user.email, uid: user.uid };
       store.dispatch('updateUser', userData);
+      console.log(user)
     } else {
       store.dispatch('updateUser', null);
     }

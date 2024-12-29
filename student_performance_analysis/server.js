@@ -68,23 +68,20 @@ const validateToken = async (req, res, next) => {
   }
 
   try {
-    // Verifică tokenul cu Firebase Admin SDK
+    
     const decodedToken = await admin.auth().verifyIdToken(idToken);
 
     console.log("Good")
     req.user = decodedToken;
-
-    // Continuă cu următorul middleware sau cu handler-ul rutei
     next(); 
   } catch (error) {
     return res.status(401).send('Invalid token');
   }
 };
 app.post('/verif-jwt', (validateTokenLater));
-// Pornim serverul Express pe portul 3000
 
 app.post('/verif-jwt', validateToken, (req, res) => {
-  // Dacă ajungi aici, tokenul a fost validat cu succes
+  
   res.status(200).json(`Token valid! UID-ul utilizatorului este: ${req.user.uid}`);
 });
 

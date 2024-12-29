@@ -12,7 +12,11 @@ body{
 
 
   }
-
+.search{
+  text-align: left;
+  font-family: "Ink Free", cursive;
+  font-size: 20px;
+}
 
 
   .books_div {
@@ -52,6 +56,7 @@ body{
     
   
     width: 20rem;
+    padding-left: 20px;
     
   
   }

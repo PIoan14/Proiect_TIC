@@ -150,6 +150,7 @@
   </div>
 </template>
 <script>
+
 import {
   getAuth,
   updateEmail,
@@ -168,7 +169,14 @@ export default {
   },
   computed: {
     user() {
-      return this.$store.getters.getUser; // Accesare utilizator din store
+      const auth = getAuth();
+      const user = auth.currentUser
+      this.$store.dispatch("updateUser", {
+            ...user,
+            displayName: user.email,
+          });
+      console.log(this.$store.getters.getUser)
+      return this.$store.getters.getUser; 
     },
   },
   methods: {

@@ -26,6 +26,9 @@
             />
           </div>
           <button type="submit" id="btn">Sign Up</button>
+          <div style="padding-top: 10px;">
+            <button @click="inapoi" type="submit" id="btn">Inapoi</button>
+          </div>
           <p v-if="error" class="error-message">{{ error }}</p>
         </form>
       </div>
@@ -58,6 +61,9 @@
           console.error("Eroare de signup:", this.error);
         }
       },
+      inapoi(){
+        this.$router.push('/')
+      }
     },
   };
   </script>

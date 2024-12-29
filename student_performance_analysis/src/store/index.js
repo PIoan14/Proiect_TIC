@@ -1,9 +1,13 @@
+import { getAuth } from 'firebase/auth';
 import { createStore } from 'vuex';
 import createPersistedState from 'vuex-persistedstate';
 
+const auth = getAuth()
 export const store = createStore({
   state: {
-    user:  JSON.parse(localStorage.getItem('user')) || null
+    us : auth.currentUser,
+    user:  JSON.parse(localStorage.getItem('user')) || null,
+    
   },
   mutations: {
     setUser(state, new_user) {
@@ -19,7 +23,8 @@ export const store = createStore({
     }
   },
   getters: {
-    getUser: (state) => state.user
+    getUser: (state) => state.user,
+    getUs :(state) => state.us
   },
   plugins: [createPersistedState()]
 });

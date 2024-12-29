@@ -331,7 +331,7 @@ export default {
             console.log("Sa vedem daca e bine");
             console.log(result);
             this.de_afisat = result;
-            console.log(`Lungime : ${this.de_afisat.length}`);
+            
             this.tabel = true
           });
         } catch (error) {

@@ -209,6 +209,19 @@
                 </li>
               </div>
             </div>
+            <div class="card m-2" style="width: 18rem">
+              <div class="card-body">
+                <h5 class="card-title">Delogare</h5>
+                <h6 class="card-subtitle mb-2 text-muted">...</h6>
+                <p class="card-text">
+                  Iesi din aplicatie...
+                </p>
+
+                <button @click="logout" id="Buton Delete" type="button" class="btn btn-info">
+                  Logout
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -218,9 +231,26 @@
   </div>
 </template>
 <script>
+import { getAuth, signOut } from "firebase/auth";
+
 export default {
   name: "HomePreview",
   setup() {},
+  methods: {
+    logout() {
+      const auth = getAuth();
+
+      signOut(auth)
+        .then(() => {
+          console.log("Utilizatorul a fost delogat cu succes.");
+          
+          this.$router.push("/");
+        })
+        .catch((error) => {
+          console.error("Eroare la delogare:", error.message);
+        });
+    },
+  },
 };
 </script>
 <style scoped></style>

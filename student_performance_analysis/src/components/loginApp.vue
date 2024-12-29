@@ -8,53 +8,66 @@
           </div>
         </div>
         <div class="main-content col-md-8 col-sm-8">
-            <form @submit.prevent="login">
-          <h1 class="BigTitle text-center">
-            Schimba numele de utilizator sau parola
-          </h1>
-          <div class="row justify-content-center">
-            <!-- Central vertical line -->
-            <div class="col-md-2 d-flex flex-column align-items-center">
-              <div class="card m-2" style="width: 30rem">
-                <div class="card-body">
-                  <h5 class="card-title">Credentiale :</h5>
-                  <div class="input-group mb-3">
-                    <span class="input-group-text" id="basic-addon1">@</span>
-                    <input
-                      type="text"
-                      class="form-control"
-                      placeholder="Username"
-                      v-model="email"
-                      aria-label="Username"
-                      aria-describedby="basic-addon1"
-                       autocomplete="Username"
-                      required
-                    />
-                    <input
-                      type="text"
-                      class="form-control"
-                      placeholder="Parola"
-                      aria-label="Username"
-                      v-model="password"
-                      aria-describedby="basic-addon1"
-                      required
-                    />
+          <form @submit.prevent="login">
+            <h1 class="BigTitle text-center">
+              Pagina de intrare in cont
+            </h1>
+            <div class="row justify-content-center">
+              <!-- Central vertical line -->
+              <div class="col-md-2 d-flex flex-column align-items-center">
+                <div class="card m-2" style="width: 30rem">
+                  <div class="card-body">
+                    <h5 class="card-title">Credentiale :</h5>
+                    <div class="input-group mb-3">
+                      <span class="input-group-text" id="basic-addon1">@</span>
+                      <input
+                        type="text"
+                        class="form-control"
+                        placeholder="Username"
+                        v-model="email"
+                        aria-label="Username"
+                        aria-describedby="basic-addon1"
+                        autocomplete="Username"
+                        required
+                      />
+                      <input
+                        type="text"
+                        class="form-control"
+                        placeholder="Parola"
+                        aria-label="Username"
+                        v-model="password"
+                        aria-describedby="basic-addon1"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <button @click= "login" type ="submit" class="btn btn-primary" >Logare</button>
+
+                    </div>
+                    <div style="padding-top: 10px;">
+                      <button @click= "creeazaCont" type ="submit" class="btn btn-dark" >Creeaza cont</button>
+
+                    </div>
+                    
+                    
                   </div>
-                  <button type="submit" class="btn btn-dark">Dark</button>
                 </div>
               </div>
             </div>
-          </div>
-        </form>
+          </form>
         </div>
       </div>
     </div>
-   
   </div>
 </template>
 
 <script>
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  setPersistence,
+  browserLocalPersistence,
+} from "firebase/auth";
 
 export default {
   name: "loginApp",
@@ -70,16 +83,29 @@ export default {
       this.error = null;
       const auth = getAuth();
 
-      try {
-        await signInWithEmailAndPassword(auth, this.email, this.password);
-        console.log("Login cu succes!");
-        this.$router.push("/home");
-      } catch (error) {
-        this.error = error.message;
-        console.error("Eroare de login:", this.error);
-        alert("Credentiale incorecte");
-      }
+      setPersistence(auth, browserLocalPersistence)
+        .then(() => {
+          console.log("Persistența sesiunii este setată pe local");
+        })
+        .catch((error) => {
+          console.error("Eroare la setarea persistenței:", error.message);
+        });
+
+      signInWithEmailAndPassword(auth, this.email, this.password)
+        .then((userCredential) => {
+          // Utilizator logat
+          const user = userCredential.user;
+          this.$router.push("/home");
+          console.log("Utilizator logat:", user);
+        })
+        .catch((error) => {
+          console.error("Eroare la autentificare:", error.message);
+        });
     },
+    creeazaCont(){
+      console.log("creeaza")
+      this.$router.push("/SignUp")
+    }
   },
 };
 </script>

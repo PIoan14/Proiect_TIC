@@ -203,6 +203,7 @@
                   Vezi date despre un anumit elev inregistrat in Firebase pe
                   baza unuia dintre atributele oferite in checklist!
                 </p>
+               
 
                 <li>
                   <router-link to="/CautaStudent">Cauta elev</router-link>
@@ -217,7 +218,7 @@
                   Iesi din aplicatie...
                 </p>
 
-                <button @click="logout" id="Buton Delete" type="button" class="btn btn-info">
+                <button @click="logout" id="Buton Delete" type="button" class="btn btn-dark">
                   Logout
                 </button>
               </div>

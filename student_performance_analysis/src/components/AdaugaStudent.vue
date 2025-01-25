@@ -135,6 +135,20 @@
                 </div>
                 <div class="mb-3">
                   <label for="exampleInputPassword1" class="form-label"
+                    >Grupa (de la 1 la 5)</label
+                  >
+                  <input
+                    class="form-control"
+                    id="exampleInputPassword1"
+                    required
+                    minlength="2"
+                    autocomplete="off"
+                    v-model="student.grupa"
+                  />
+                </div>
+
+                <div class="mb-3">
+                  <label for="exampleInputPassword1" class="form-label"
                     >Varsta</label
                   >
                   <input
@@ -196,8 +210,10 @@ export default {
   setup() {},
   data() {
     return {
+      check : 1,
       student: {
         id_elev: "",
+        grupa :"",
         nume_si_prenume: "",
         cnp: "",
         varsta: "",
@@ -230,7 +246,7 @@ export default {
       const token = await this.getToken();
       console.log(`Avem token : ${token}`);
       console.log("Suntem la verificare");
-      var check = 1;
+      this.check = 1;
 
       await fetch("http://localhost:3000/verif-jwt", {
         method: "POST",
@@ -243,20 +259,95 @@ export default {
         .then((response) => response.json())
         .then((data) => {
           console.log("Răspuns de la server:", data);
-          alert("Token verificat cu succes");
+          alert("Se realizeaza adaugarea studentului in Firebase");
         })
         .catch((error) => {
-          console.error("Eroareee:", error);
-          check = 0;
+          console.error("Eroare:", error);
+          this.check = 0;
         });
 
       try {
         this.student.id_elev = Number(this.student.id_elev);
-        console.log(this.student.id_elev)
+        console.log(this.student.id_elev);
         if (isNaN(this.student.id_elev)) {
           throw new Error("Id ul trebuie sa fie un numar!");
+        } else {
+          await fetch("http://localhost:3000/data")
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error("Network response was not ok");
+              }
+              const rez = response.json();
+
+              return rez;
+            })
+            .then((data) => {
+              try {
+                console.log(data[0].nume_si_prenume);
+
+                this.data = data;
+
+                console.log(this.data);
+                console.log("++++++++++++++=");
+
+                console.log(this.data.length);
+                this.data = data;
+
+                let id_check = [];
+                alert("stop")
+
+                for (let i = 0; i < this.data.length; i++) {
+                  
+                  id_check.push(this.data[i].id_elev);
+                 
+                  
+                }
+                console.log(id_check.sort())
+
+                if (this.student.id_elev != id_check[id_check.length - 1] + 1) {
+                    this.check = 0;
+                    console.log(id_check);
+                    console.log("Failed test");
+                    alert(`Id urile trebuie sa fie unice si crescatoare din 1 in 1. Ultimul id folosit este ${
+                        id_check[id_check.length - 1]}`)
+
+                    throw new Error(
+                      `Id urile trebuie sa fie unice si crescatoare din 1 in 1. Ultimul id folosit este ${
+                        id_check[id_check.length - 1]
+                      }`
+                    );
+                  }
+                console.log(id_check);
+                this.data = JSON.parse(JSON.stringify(this.data));
+              } catch {
+                console.log(this.check)
+                console.log("No data");
+              }
+            })
+            .catch((error) => {
+              console.error(
+                "There was a problem with the fetch operation:",
+                error
+              );
+              alert(error);
+            });
         }
       } catch (error) {
+        alert(error);
+      }
+      try {
+        this.student.grupa = parseInt(this.student.grupa, 10);
+        if (isNaN(this.student.grupa)) {
+          throw new Error(
+            "Grupa trebuie sa fie in format de numar intreg"
+          );
+        }
+        if (this.student.grupa > 5 || this.student.grupa<1 ) {
+          console.log(this.student.grupa)
+          throw new Error("Grupele sunt de la 1 la 5 !");
+        }
+      } catch (error) {
+        this.check = 0;
         alert(error);
       }
 
@@ -271,7 +362,7 @@ export default {
           throw new Error("Varsta prea mare");
         }
       } catch (error) {
-        check = 0;
+        this.check = 0;
         alert(error);
       }
 
@@ -282,7 +373,7 @@ export default {
           throw new Error("Format de email incorect");
         }
       } catch (error) {
-        check = 0;
+        this.check = 0;
         alert(error);
       }
 
@@ -291,17 +382,26 @@ export default {
           throw new Error(
             "Numele si prenumele trebuie sa fie mai lungi de 5 caractere!"
           );
+        }else{
+          
+          console.log(`Last branch ${this.check}`)
         }
       } catch (error) {
-        check = 0;
+        this.check = 0;
         alert(error);
       }
-      if (check === 1) {
+      if (this.check === 1) {
         addStudent(this.student);
 
         setTimeout(() => {
           location.reload();
-        }, 5000);
+        }, 1000);
+
+      }
+      else{
+        setTimeout(() => {
+          location.reload();
+        }, 1000);
       }
     },
   },

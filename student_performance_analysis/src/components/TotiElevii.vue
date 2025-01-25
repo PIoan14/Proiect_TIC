@@ -78,26 +78,73 @@
     </nav>
     <div class="container-fluid">
       <div class="row">
-        <div class="col-md-2 col-sm-2 text-center"></div>
-        <div class="main-content col-md-8 col-sm-8">
+        <div class="col-md-3 col-sm-3 text-center">
+          <div>
+            <p
+              style="
+                padding-top: 150px;
+                padding-right: 50px;
+                font-family: Ink Free;
+              "
+            >
+              O pagină de intrare într-o aplicație de monitorizare a studenților
+              este punctul de acces principal pentru utilizatori, oferind o
+              interfață simplă și intuitivă. Aceasta include câmpuri pentru
+              autentificare, precum adresa de email și parola, și poate oferi
+              opțiuni suplimentare, cum ar fi "Am uitat parola" sau
+              "Înregistrare" pentru utilizatorii noi.
+            </p>
+          </div>
+          <div class="books_div">
+            <span class="books">&#128393;</span>
+          </div>
+        </div>
+        <div class="main-content col-md-9 col-sm-9">
           <div class="BigTitle">Carduri asociate elevilor</div>
           <div class="row">
-          <div v-for="(item, index) in data" :key="index"  class="card m-2" style="width: 18rem">
-            <div class="card-body">
-              <h5 class="card-title">Card {{ index +1 }}</h5>
-              <h6 class="card-subtitle mb-2 text-body-secondary">
-                {{ item.nume_si_prenume }}
-              </h6>
+            <div
+              v-for="(item, index) in data"
+              :key="index"
+              class="card m-2"
+              style="width: 22rem"
+            >
+              <div class="card-body">
+                <h5 class="card-title">Card {{ index + 1 }}</h5>
+                <h6 class="card-subtitle mb-2 text-body-secondary">
+                  {{ item.nume_si_prenume }}
+                </h6>
+                <table class="table">
+                  <thead> 
+                    <tr> 
+                      <th scope="col1"> ID</th>
+                      <th scope="col1"> Email</th>
+                      <th scope="col1"> Grupa</th>
+                    </tr>
+                  </thead>
+                  <tbody class="table-group-divider">
+                        <tr>
+                          <td>{{item.id_elev }}</td>
+                          <td>{{item.email }}</td>
+                          
+                          <td>{{item.grupa }}</td>
+                        </tr>
+                      </tbody>
+                </table>
+               
+              </div>
+            </div>
+            <div v-if="empty">
               <p class="card-text">
-                Id elev este : {{ item.id_elev}}
-                Email student : {{ item.email }}
+                Momentan nu exista studenti inregistrati! Adaugati studenti in
+                baza de date! Acestia vor fi afisati aici ;]]]] !
               </p>
-              
+            </div>
+            <div v-if="empty" class="books_div">
+              <span class="books">&#128393;</span>
             </div>
           </div>
         </div>
-        </div>
-        <div class="col-md-2 col-sm-2 text-center"></div>
+        
       </div>
     </div>
   </div>
@@ -106,17 +153,15 @@
 export default {
   name: "TotiElevii",
   setup() {},
-  data(){
-    
-    
-    return{ 
-      data : []
-    } 
+  data() {
+    return {
+      data: [],
+      empty: false,
+    };
   },
   mounted() {
     this.take_data();
-    console.log("Hop")
-   
+    console.log("Hop");
   },
   methods: {
     async take_data() {
@@ -125,28 +170,26 @@ export default {
           if (!response.ok) {
             throw new Error("Network response was not ok");
           }
-          const rez = response.json()
-          
-          
+          const rez = response.json();
+
           return rez;
         })
         .then((data) => {
           console.log(data[0].nume_si_prenume);
-          
-          this.data = data
-          
-          console.log(this.data)
+
+          this.data = data;
+
+          console.log(this.data);
+          console.log("++++++++++++++=");
+
+          console.log(this.data.length);
           this.data = JSON.parse(JSON.stringify(this.data));
-         
         })
         .catch((error) => {
+          this.empty = true;
           console.error("There was a problem with the fetch operation:", error);
-          
         });
     },
-   
-
-    
   },
 };
 </script>

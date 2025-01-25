@@ -4,6 +4,8 @@ import {
   addDoc,
   query,
   getDocs,
+  setDoc,
+ 
   where,
   updateDoc,
   doc,
@@ -12,6 +14,7 @@ import {
 
 export async function addStudent(student) {
   console.log("In func");
+  console.log(db)
 
   try {
     const data = {
@@ -22,12 +25,14 @@ export async function addStudent(student) {
       adresa: student.adresa,
       varsta: student.varsta,
       note: student.note,
+      grupa : student.grupa
     };
-    console.log(student)
+    console.log(data)
 
     await addDoc(collection(db, "elevi"), data);
-  } catch {
-    console.log("Nu s-a creeat doc");
+    console.log('added')
+  } catch(error) {
+    console.log(`Nu s-a creeat doc : ${error}`);
   }
 }
 
@@ -60,6 +65,7 @@ export async function update( id, value, column) {
       
       console.log(value);
       const q = query(collection(db, "elevi"), where('id_elev', "==", id));
+      console.log(q)
       const q_snapshot = await getDocs(q);
       console.log("Reach");
       if (!q_snapshot.empty) {
@@ -73,36 +79,129 @@ export async function update( id, value, column) {
         
       } 
     } catch {
-      alert("Nu am gasit studentul cu numele ID ul specificat");
+      alert("Nu am gasit studentul cu ID ul specificat");
     }
 
-    ids = ids.toString()
 
     const database = doc(db, "elevi", ids);
+    
     console.log(database)
+    alert("Toate bune")
     
 
     const update = {
       [column]: value,
     };
 
-    await updateDoc(database, update);
+    try{
+      await updateDoc(database, update)
+  .then(() => console.log("Update successful"))
+  .catch((error) => {
+    console.error("Error updating document:", error);
+    alert("Error during update: " + error.message);
+  });
+      alert("stopppp")
+
+    }catch (error){
+      alert("stopppp")
+      console.log(error)
+      
+
+    }
+  } catch (error) {
+    alert(error)
+    console.log("Hy hello", error);
+  }
+}
+
+export async function addMark( id, indexNota_func, value, column) {
+  try {
+    try {
+      
+      console.log(value);
+      console.log("Functie")
+      const q = query(collection(db, "elevi"), where('id_elev', "==", id));
+     
+      const q_snapshot = await getDocs(q);
+
+      console.log("Reach");
+      if (!q_snapshot.empty) {
+        console.log(q_snapshot.docs[0].data())
+        console.log(q_snapshot.docs[0].id)
+        var studentRef = doc(db, "elevi", q_snapshot.docs[0].id);
+        
+
+        var extraxted = q_snapshot.docs[0].data()
+      } 
+    } catch {
+      alert("Nu am gasit studentul cu ID ul specificat");
+    }
+
+    console.log(column)
+    
+    
+    var new_note = extraxted.note[column]
+    console.log(Object.values(new_note))
+    console.log("h")
+    if(Object.keys(new_note).length === 0){
+      console.log("Lungime 0")
+      console.log(indexNota_func)
+      new_note = new Array(indexNota_func).fill(null);
+      console.log(new_note)
+      new_note[indexNota_func-1] = value
+      extraxted.note[column] = new_note
+
+    }else{
+      new_note =Object.values(new_note)
+      
+     
+      console.log(new_note)
+      for(let i = new_note.length; i < indexNota_func-1; i++){
+        console.log[i]
+        new_note[i] = null
+
+      }
+      new_note[indexNota_func-1] = value
+      console.log(new_note)
+      
+      console.log(`New note : ${new_note}`)
+      extraxted.note[column] = new_note
+
+    }
+
+    await setDoc(studentRef, extraxted);
+   
+
+
   } catch (error) {
     console.log("Hy hello", error);
   }
 }
 
+export async function purge() {
+  const querySnapshot = await getDocs(collection(db, 'elevi'));
+    const promises = querySnapshot.docs.map(docSnapshot =>
+        deleteDoc(doc(db, 'elevi', docSnapshot.id))
+    );
+    await Promise.all(promises);
+    console.log(`Toate documentele din colecția "elevi" au fost șterse.`);
+}
+  
+
+
 export async function deleteElev( id) {
     try {
       try {
         
-        
+       
         const q = query(collection(db, "elevi"), where('id_elev', "==", id));
         const q_snapshot = await getDocs(q);
         console.log("Reach");
+        
         if (!q_snapshot.empty) {
           var ids = q_snapshot.docs.map(doc => doc.id);
           // Afișează ID-urile în consolă
+         
   
           var id_doc = ids[0]
           console.log("Id docc")
@@ -110,6 +209,7 @@ export async function deleteElev( id) {
   
           
         } 
+        
       } catch {
         alert("Nu am gasit studentul cu numele ID ul specificat");
       }
@@ -121,6 +221,8 @@ export async function deleteElev( id) {
       
       try{
         const database = doc(db, "elevi", id_doc)
+        console.log(database)
+       
         await deleteDoc(database)
 
     }catch{

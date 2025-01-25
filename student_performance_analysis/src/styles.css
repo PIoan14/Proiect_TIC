@@ -1,67 +1,58 @@
-body{
-  background-color: 
-  rgb(214, 238, 232);
+body {
+  background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1Vg_NoLjYkcaw4MJPAY9vNlVpXT6_iGSw9w&s');
+  
+  
 }
 .dropdown-menu {
   min-width: 200px; /* Setează lățimea minimă  background-color: rgb(199, 231, 233);*/
   text-align: left;
-  font-family: 'Times New Roman', Times, serif/* Opțional, pentru centrarea textului */
+  font-family: "Times New Roman", Times, serif; /* Opțional, pentru centrarea textului */
 }
 .books {
-    font-size: 250px;
-
-
-  }
-.search{
+  font-size: 250px;
+}
+.search {
   text-align: left;
   font-family: "Ink Free", cursive;
   font-size: 20px;
 }
 
+.books_div {
+  padding-top: 50px;
+  padding-left: 10px;
+}
+.BigTitle {
+  padding-top: 30px;
+  padding-bottom: 30px;
+  font-family: "Ink Free", cursive;
+  font-weight: bold;
+  text-align: left;
+  font-size: 40px;
+}
+.card-text {
+  font-family: "72 black";
+  font-weight: bold;
+}
+.card-title {
+  font-family: "Times New Roman", Times, serif;
+  font-style: italic;
+}
+.r-link {
+  padding-left: 20px;
+}
 
-  .books_div {
-    padding-top: 50px;
-    padding-left: 10px;
+.setari {
+  padding-left: 50px;
+}
 
-  }
-  .BigTitle{
-    padding-top: 30px;
-    padding-bottom: 30px;
-    font-family: "Ink Free", cursive;
-    font-weight: bold;
-    text-align: left;
-    font-size: 40px;
-   
-  }
-  .card-text{
-    font-family: "Ink Free", cursive;
-    font-weight: bold;
-    
-  }
-  .card-title{
-    font-family: 'Times New Roman', Times, serif;
-    font-style: italic;
-    
-  }
-  .r-link{
-    padding-left: 20px;
-    
-  }
-
-  .setari{
-    padding-left: 50px;
-  }
-
-  .card{
-    
-  
-    width: 20rem;
-    padding-left: 20px;
-    
-  
-  }
-  .statusProfil{
-    
-    display: flex; /* Activează Flexbox */
-    justify-content: center;
-  }
+.card {
+  width: 20rem;
+  padding-left: 20px;
+  background-color: rgb(255, 255, 255);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.2); /* Umbra pentru efect 3D */
+  transition: all 0.3s ease;
+}
+.statusProfil {
+  display: flex; /* Activează Flexbox */
+  justify-content: center;
+}

@@ -78,15 +78,25 @@
     </nav>
     <div class="container-fluid">
       <div class="row">
-        <div class="col-md-3 col-sm-3 text-center">
-          <div class="books_div">
-            <span class="books">&#128393;</span>
-          </div>
-        </div>
-        <div class="main-content col-md-9 col-sm-9">
+        
+        
+        <div class="main-content col-md-12 col-sm-12">
           <div class="BigTitle">Carduri asociate elevilor</div>
           <div class="row">
-            <div class="card" style="width: 20rem">
+            <div class="card m-2" style="width: 23rem;">
+              <div class="card-body">
+                <h5 class="card-title">Hint!</h5>
+                <h6 class="card-subtitle mb-2 text-muted">...</h6>
+
+                <p class="card-text">
+                  Selecteaza una dintre optiunile de update. Modificarea va fi facuta aspra unui student cautat 
+                  pe baza id-ului sau
+                </p>
+                <span style="font-size: 100px;">&#128393;</span>
+
+              </div>
+            </div>
+            <div class="card m-2" style="width: 23rem">
               <h3>Caută student după:</h3>
               <form class="search" id="ckForm">
                 <div>
@@ -147,6 +157,17 @@
                 <div>
                   <label
                     ><input
+                      @change="schimba"
+                      type="radio"
+                      name="searchOption"
+                      value="grupa"
+                    />
+                    Grupa</label
+                  >
+                </div>
+                <div>
+                  <label
+                    ><input
                       @change="switchnota"
                       type="radio"
                       name="searchOption"
@@ -176,9 +197,10 @@
                   />
                 </div>
               </form>
+             
               <div></div>
             </div>
-            <div class="card" style="width: 25rem">
+            <div class="card m-2" style="width: 23rem">
               <div class="card-body">
                 <h5 class="card-title">Aplica Modificari</h5>
                 <h6 class="card-subtitle mb-2 text-muted">...</h6>
@@ -190,12 +212,14 @@
                     <button id="s_btn" type="button" class="btn btn-info">
                       Commit
                     </button>
+                    
+                    
                   </div>
                 </div>
               </div>
             </div>
 
-            <div class="card" style="width: 20rem">
+            <div class="card m-2" style="width: 23rem">
               <div class="card-body">
                 <h5 class="card-title">Output</h5>
                 <h6 class="card-subtitle mb-2 text-muted">...</h6>
@@ -204,15 +228,18 @@
                   Rezultatele cautarii vor fii listate dedesubt intr-un output
                   de forma unui tabel!
                 </p>
+                <span style="font-size: 100px;">&#128393;</span>
               </div>
             </div>
           </div>
         </div>
         <div class="row">
-          <div class="col-md-2 col-sm-2 text-center"></div>
-          <div class="col-md-9 col-sm-9 text-center">
+          
+          <div class="col-md-12 col-sm-12 text-center">
             <div class="row">
-              <table v-if="tabel" class="table">
+              <div v-if="tabel" class="card m-2" style="width: 98rem;">
+                <div class="card-body"> 
+                  <table  class="table" style="width: 100%;">
                 <thead>
                   <tr>
                     <th scope="col">Rez nr</th>
@@ -225,12 +252,13 @@
                     <th scope="col">Note Materia 1</th>
                     <th scope="col">Note Materia 2</th>
                     <th scope="col">Note Materia 3</th>
-                    
+                    <th scope="col">Media Totala</th>
+                    <th scope="col">Grupa</th>
                   </tr>
                 </thead>
                 <tbody class="table-group-divider">
                   <tr v-for="(item, index) in de_afisat" :key="index">
-                    <th scope="row">{{ index +1 }}</th>
+                    <th scope="row">{{ index + 1 }}</th>
                     <td>{{ item.id_elev }}</td>
                     <td>{{ item.nume_si_prenume }}</td>
                     <td>{{ item.email }}</td>
@@ -240,10 +268,14 @@
                     <td>{{ item.note.materia_1 }}</td>
                     <td>{{ item.note.materia_2 }}</td>
                     <td>{{ item.note.materia_3 }}</td>
-                   
+                    <td>{{ item.Medie}}</td>
+                    <td>{{ item.grupa }}</td>
                   </tr>
                 </tbody>
               </table>
+                </div>
+              </div>
+              
             </div>
           </div>
         </div>
@@ -265,6 +297,7 @@ export default {
       bifat: false,
       de_afisat: [],
       tabel: false,
+      medie: 0,
     };
   },
   methods: {
@@ -313,16 +346,17 @@ export default {
       const button = document.getElementById("s_btn");
       button.addEventListener("click", () => {
         this.value = document.getElementById("key").value;
-        
-        if (this.key === 'id_elev'){
-          this.value = Number(this.value)
+
+        if (this.key === "id_elev" || this.key === "grupa") {
+          this.value = Number(this.value);
         }
-        
+
         console.log(this.value + "");
         console.log("+++++++++++++++++");
 
         try {
           this.de_afisat = find(this.key, this.value);
+          console.log(this.de_afisat);
           const promise = new Promise((resolve) => {
             setTimeout(() => resolve(this.de_afisat), 1000);
           });
@@ -331,8 +365,31 @@ export default {
             console.log("Sa vedem daca e bine");
             console.log(result);
             this.de_afisat = result;
-            
-            this.tabel = true
+           
+            for (let i = 0; i < this.de_afisat.length; i++) {
+              let vector = [];
+              vector = vector.concat(this.de_afisat[i].note.materia_1);
+              vector =vector.concat(this.de_afisat[i].note.materia_2);
+              vector = vector.concat(this.de_afisat[i].note.materia_3);
+              console.log(vector)
+              var l = vector.length
+              for (let i = 0; i < vector.length; i++) {
+                if (vector[i] == null){
+                  l-= 1
+                  continue
+                }else{
+                  this.medie += vector[i];
+
+                }
+                
+              }
+              this.medie = this.medie / l;
+              console.log(this.medie)
+              this.de_afisat[i]['Medie'] = this.medie
+              this.medie= 0 
+            }
+
+            this.tabel = true;
           });
         } catch (error) {
           alert(error);

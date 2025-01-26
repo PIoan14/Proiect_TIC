@@ -78,22 +78,19 @@
     </nav>
     <div class="container-fluid">
       <div class="row">
-        
-        
         <div class="main-content col-md-12 col-sm-12">
           <div class="BigTitle">Carduri asociate elevilor</div>
           <div class="row">
-            <div class="card m-2" style="width: 23rem;">
+            <div class="card m-2" style="width: 23rem">
               <div class="card-body">
                 <h5 class="card-title">Hint!</h5>
                 <h6 class="card-subtitle mb-2 text-muted">...</h6>
 
                 <p class="card-text">
-                  Selecteaza una dintre optiunile de update. Modificarea va fi facuta aspra unui student cautat 
-                  pe baza id-ului sau
+                  Selecteaza una dintre optiunile de update. Modificarea va fi
+                  facuta aspra unui student cautat pe baza id-ului sau
                 </p>
-                <span style="font-size: 100px;">&#128393;</span>
-
+                <span style="font-size: 100px">&#128393;</span>
               </div>
             </div>
             <div class="card m-2" style="width: 23rem">
@@ -168,36 +165,27 @@
                 <div>
                   <label
                     ><input
-                      @change="switchnota"
+                      @change="schimba"
                       type="radio"
                       name="searchOption"
-                      value="Note"
+                      value="media"
                     />
-                    note</label
+                    Medie totala rotunjita</label
                   >
                 </div>
-                <div v-if="bifat" id="noteInput" class="hidden">
-                  <label for="nota">Index nota:</label>
-                  <input
-                    placeholder="Un numar anume"
-                    type="number"
-                    id="nota-index"
-                    name="nota"
-                  />
-                  <label placeholder="De la 1 la 10" for="nota"
-                    >Alege nota:</label
+                <div>
+                  <label
+                    ><input
+                      @change="schimba"
+                      type="radio"
+                      name="searchOption"
+                      value="toti"
+                    />
+                    Toti studentii</label
                   >
-                  <input type="number" id="nota-value" name="nota" />
-                  <label for="nota">Alege materia:</label>
-                  <input
-                    placeholder="De la 1 la 3 in acest caz"
-                    type="number"
-                    id="materie"
-                    name="n"
-                  />
                 </div>
               </form>
-             
+
               <div></div>
             </div>
             <div class="card m-2" style="width: 23rem">
@@ -210,10 +198,8 @@
 
                   <div style="padding-top: 10px">
                     <button id="s_btn" type="button" class="btn btn-info">
-                      Commit
+                      Afiseaza
                     </button>
-                    
-                    
                   </div>
                 </div>
               </div>
@@ -228,54 +214,60 @@
                   Rezultatele cautarii vor fii listate dedesubt intr-un output
                   de forma unui tabel!
                 </p>
-                <span style="font-size: 100px;">&#128393;</span>
+                <span style="font-size: 100px">&#128393;</span>
               </div>
             </div>
           </div>
         </div>
         <div class="row">
-          
           <div class="col-md-12 col-sm-12 text-center">
-            <div class="row">
-              <div v-if="tabel" class="card m-2" style="width: 98rem;">
-                <div class="card-body"> 
-                  <table  class="table" style="width: 100%;">
-                <thead>
-                  <tr>
-                    <th scope="col">Rez nr</th>
-                    <th scope="col">ID_Elev</th>
-                    <th scope="col">Nume si prenume</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Adresa</th>
-                    <th scope="col">CNP</th>
-                    <th scope="col">Varsta</th>
-                    <th scope="col">Note Materia 1</th>
-                    <th scope="col">Note Materia 2</th>
-                    <th scope="col">Note Materia 3</th>
-                    <th scope="col">Media Totala</th>
-                    <th scope="col">Grupa</th>
-                  </tr>
-                </thead>
-                <tbody class="table-group-divider">
-                  <tr v-for="(item, index) in de_afisat" :key="index">
-                    <th scope="row">{{ index + 1 }}</th>
-                    <td>{{ item.id_elev }}</td>
-                    <td>{{ item.nume_si_prenume }}</td>
-                    <td>{{ item.email }}</td>
-                    <td>{{ item.adresa }}</td>
-                    <td>{{ item.cnp }}</td>
-                    <td>{{ item.varsta }}</td>
-                    <td>{{ item.note.materia_1 }}</td>
-                    <td>{{ item.note.materia_2 }}</td>
-                    <td>{{ item.note.materia_3 }}</td>
-                    <td>{{ item.Medie}}</td>
-                    <td>{{ item.grupa }}</td>
-                  </tr>
-                </tbody>
-              </table>
+            <div class="row" style="padding-top: 10px">
+              <div
+                v-if="tabel"
+                style="font-family: Ink Free, cursive; font-weight: bold"
+              >
+                <h2>Rezultate :</h2>
+              </div>
+
+              <div v-if="tabel" class="card m-2" style="width: 98rem">
+                <div class="card-body">
+                  <table id="tabelStudenti" class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Rez nr</th>
+                        <th scope="col">ID_Elev</th>
+                        <th scope="col">Nume si prenume</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Adresa</th>
+                        <th scope="col">CNP</th>
+                        <th scope="col">Varsta</th>
+                        <th scope="col">Note Materia 1</th>
+                        <th scope="col">Note Materia 2</th>
+                        <th scope="col">Note Materia 3</th>
+                        <th scope="col">Media Totala</th>
+                        <th scope="col">Grupa</th>
+                      </tr>
+                    </thead>
+                    <tbody class="table-group-divider">
+                      <tr v-for="(item, index) in de_afisat" :key="index">
+                        <th scope="row">{{ index + 1 }}</th>
+                        <td>{{ item.id_elev }}</td>
+                        <td>{{ item.nume_si_prenume }}</td>
+                        <td>{{ item.email }}</td>
+                        <td>{{ item.adresa }}</td>
+                        <td>{{ item.cnp }}</td>
+                        <td>{{ item.varsta }}</td>
+                        <td>{{ item.note.materia_1 }}</td>
+                        <td>{{ item.note.materia_2 }}</td>
+                        <td>{{ item.note.materia_3 }}</td>
+                        <td>{{ item.Medie }}</td>
+                        <td>{{ item.grupa }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <button class="btn btn-primary" @click="downloadExcel()">Descarcă tabelul în Excel</button>
                 </div>
               </div>
-              
             </div>
           </div>
         </div>
@@ -286,7 +278,7 @@
   </div>
 </template>
 <script>
-import { find } from "./actions.js";
+import { find, findAll } from "./actions.js";
 export default {
   name: "CautaElev",
   setup() {},
@@ -301,37 +293,31 @@ export default {
     };
   },
   methods: {
-    switchnota() {
-      this.bifat = true;
-      const button = document.getElementById("s_btn");
-      button.addEventListener("click", () => {
-        try {
-          const index_nota_dom = document.getElementById("nota-index");
-          const index_nota = index_nota_dom.value;
-          const valoare_nota_dom = document.getElementById("nota-value");
-          const valoare_nota = valoare_nota_dom.value;
-          const materie_dom = document.getElementById("materie");
-          const materie = materie_dom.value;
-
-          console.log(index_nota, valoare_nota, materie);
-          try {
-            if ((materie > 3) | (materie < 1)) {
-              throw new Error("Alege o materie de la 1 la 3");
-            }
-            if ((valoare_nota > 10) | (valoare_nota < 1)) {
-              throw new Error("Alege o nota de la 1 la 10");
-            }
-
-            const valoare = document.getElementById("key");
-            console.log(valoare);
-          } catch (error) {
-            alert(error);
-          }
-        } catch {
-          alert("Scrie numarul corespunzator materiei si nota p");
-        }
-      });
+    refresh() {
+      setTimeout(() => {
+        location.reload();
+      }, 1000);
     },
+    downloadExcel() {
+      // Obține tabelul
+      const table = document.getElementById('tabelStudenti');
+
+      // Creează o variabilă pentru conținutul tabelului
+      let tableHTML = table.outerHTML.replace(/ /g, '%20');
+
+      // Creează un fișier Blob care să conțină tabelul în format Excel
+      const dataType = 'application/vnd.ms-excel';
+      const fileName = 'Studenti_Aplicatie_Firebase_Paul.xls'; // Numele fișierului descărcat
+
+      // Creează un link temporar pentru descărcare
+      const downloadLink = document.createElement('a');
+      downloadLink.href = `data:${dataType}, ${tableHTML}`;
+      downloadLink.download = fileName;
+
+      // Simulează un click pe link pentru a începe descărcarea
+      downloadLink.click();
+    },
+
     schimba() {
       this.bifat = false;
 
@@ -346,6 +332,101 @@ export default {
       const button = document.getElementById("s_btn");
       button.addEventListener("click", () => {
         this.value = document.getElementById("key").value;
+
+        if (this.key == "toti") {
+          this.de_afisat = findAll();
+          const promise = new Promise((resolve) => {
+            setTimeout(() => resolve(this.de_afisat), 1000);
+          });
+
+          promise.then((result) => {
+            console.log("Sa vedem daca e bine");
+            console.log(result);
+            this.de_afisat = result;
+
+            for (let i = 0; i < this.de_afisat.length; i++) {
+              let vector = [];
+              vector = vector.concat(this.de_afisat[i].note.materia_1);
+              vector = vector.concat(this.de_afisat[i].note.materia_2);
+              vector = vector.concat(this.de_afisat[i].note.materia_3);
+              console.log(vector);
+              var l = vector.length;
+              for (let i = 0; i < vector.length; i++) {
+                if (vector[i] == null) {
+                  l -= 1;
+                  continue;
+                } else {
+                  this.medie += vector[i];
+                }
+              }
+              this.medie = this.medie / l;
+              this.medie = Math.round(this.medie);
+              console.log(this.medie);
+              this.de_afisat[i]["Medie"] = this.medie;
+              this.medie = 0;
+            }
+          });
+          this.tabel = true;
+          return;
+        }
+
+        if (this.key == "media") {
+          this.value = Number(this.value);
+          console.log(`Val ${this.value}`);
+          if (isNaN(this.value)) {
+            alert("Media inserata trebuie sa fie un numar");
+
+            return;
+          }
+          this.de_afisat = findAll();
+          const promise = new Promise((resolve) => {
+            setTimeout(() => resolve(this.de_afisat), 1000);
+          });
+
+          promise.then((result) => {
+            console.log("Sa vedem daca e bine");
+            console.log(result);
+            this.de_afisat = result;
+
+            for (let i = 0; i < this.de_afisat.length; i++) {
+              let vector = [];
+              vector = vector.concat(this.de_afisat[i].note.materia_1);
+              vector = vector.concat(this.de_afisat[i].note.materia_2);
+              vector = vector.concat(this.de_afisat[i].note.materia_3);
+              console.log(vector);
+              var l = vector.length;
+              for (let i = 0; i < vector.length; i++) {
+                if (vector[i] == null) {
+                  l -= 1;
+                  continue;
+                } else {
+                  this.medie += vector[i];
+                }
+              }
+              this.medie = this.medie / l;
+              this.medie = Math.round(this.medie);
+              console.log(this.medie);
+              this.de_afisat[i]["Medie"] = this.medie;
+              this.medie = 0;
+
+              var de_afisat_selectat_pe_medie = [];
+
+              for (let i = 0; i < this.de_afisat.length; i++) {
+                //console.log(this.de_afisat[i].Medie)
+
+                if (this.de_afisat[i].Medie == this.value) {
+                  console.log("FOUND cv");
+                  de_afisat_selectat_pe_medie =
+                    de_afisat_selectat_pe_medie.concat(this.de_afisat[i]);
+                }
+              }
+              this.de_afisat = de_afisat_selectat_pe_medie;
+            }
+          });
+
+          this.tabel = true;
+          return;
+        }
 
         if (this.key === "id_elev" || this.key === "grupa") {
           this.value = Number(this.value);
@@ -365,28 +446,37 @@ export default {
             console.log("Sa vedem daca e bine");
             console.log(result);
             this.de_afisat = result;
-           
+
+            try {
+              var a = this.de_afisat.length;
+              console.log(a);
+            } catch {
+              alert(
+                `Nu s-au gasit observatii asociate cu parametrul trimis pentru ${this.key}`
+              );
+              this.refresh();
+              return;
+            }
+
             for (let i = 0; i < this.de_afisat.length; i++) {
               let vector = [];
               vector = vector.concat(this.de_afisat[i].note.materia_1);
-              vector =vector.concat(this.de_afisat[i].note.materia_2);
+              vector = vector.concat(this.de_afisat[i].note.materia_2);
               vector = vector.concat(this.de_afisat[i].note.materia_3);
-              console.log(vector)
-              var l = vector.length
+              console.log(vector);
+              var l = vector.length;
               for (let i = 0; i < vector.length; i++) {
-                if (vector[i] == null){
-                  l-= 1
-                  continue
-                }else{
+                if (vector[i] == null) {
+                  l -= 1;
+                  continue;
+                } else {
                   this.medie += vector[i];
-
                 }
-                
               }
               this.medie = this.medie / l;
-              console.log(this.medie)
-              this.de_afisat[i]['Medie'] = this.medie
-              this.medie= 0 
+              console.log(this.medie);
+              this.de_afisat[i]["Medie"] = this.medie;
+              this.medie = 0;
             }
 
             this.tabel = true;

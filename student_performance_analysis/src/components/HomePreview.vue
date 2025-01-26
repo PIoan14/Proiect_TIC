@@ -177,8 +177,8 @@
                   Contul va fi sters din Auth Firebase. Inregistrarea va fi din
                   nou necesara in cazul revenirii in aplicatie
                 </p>
-                <a href="#" class="card-link">Card link</a>
-                <a href="#" class="card-link">Another link</a>
+                <router-link to="/StergeCont">Stergere cont</router-link>
+                
               </div>
             </div>
             <div class="card m-2" style="width: 18rem">

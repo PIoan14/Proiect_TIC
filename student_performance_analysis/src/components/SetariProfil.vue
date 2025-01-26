@@ -52,7 +52,7 @@
                 </li>
                 <li>
                   <router-link class="r-link" to="/SetariProfil"
-                    >Setari Profil</router-link
+                    >Status</router-link
                   >
                 </li>
                 <li>
@@ -84,52 +84,12 @@
           </div>
         </div>
         <div class="main-content col-md-8 col-sm-8">
-          <h1 class="BigTitle text-center">
-            Schimba numele de utilizator sau parola
-          </h1>
-          <div class="row justify-content-center">
+          <h1 class="BigTitle text-center">User curent :</h1>
+          <div class="row justify-content-center" style="padding-top: 100px">
             <!-- Central vertical line -->
             <div class="col-md-2 d-flex flex-column align-items-center">
-              <div class="card m-2" style="width: 20rem">
-                <div class="card-body">
-                  <h5 class="card-title">Nume nou de user :</h5>
-                  <div class="input-group mb-3">
-                    <span class="input-group-text" id="basic-addon1">@</span>
-                    <input
-                      type="text"
-                      class="form-control"
-                      placeholder="Username"
-                      aria-label="Username"
-                      v-model="newName"
-                      aria-describedby="basic-addon1"
-                    />
-                  </div>
-                  <button
-                    @click="updateUserName()"
-                    type="button"
-                    class="btn btn-dark"
-                  >
-                    Dark
-                  </button>
-                </div>
-              </div>
-              <div class="card m-2" style="width: 20rem">
-                <div class="card-body">
-                  <h5 class="card-title">Parola Noua</h5>
-                  <div class="input-group mb-3">
-                    <span class="input-group-text">$</span>
-                    <input
-                      placeholder="Parola noua"
-                      type="text"
-                      v-model="parola"
-                      class="form-control"
-                      aria-label="Amount (to the nearest dollar)"
-                    />
-                    <span class="input-group-text"></span>
-                  </div>
-                  <button type="button" class="btn btn-info">Commit</button>
-                </div>
-              </div>
+            
+
               <div class="card m-2" style="width: 20rem">
                 <div class="card-body">
                   <h5 class="card-title">Status</h5>
@@ -138,6 +98,8 @@
                   </p>
                 </div>
               </div>
+
+             
             </div>
           </div>
         </div>
@@ -150,13 +112,9 @@
   </div>
 </template>
 <script>
-
 import {
   getAuth,
-  updateEmail,
-  reauthenticateWithCredential,
-  EmailAuthProvider,
-  sendEmailVerification,
+ 
 } from "firebase/auth";
 export default {
   name: "SetariProfil",
@@ -170,67 +128,81 @@ export default {
   computed: {
     user() {
       const auth = getAuth();
-      const user = auth.currentUser
-      this.$store.dispatch("updateUser", {
-            ...user,
-            displayName: user.email,
-          });
-      console.log(this.$store.getters.getUser)
-      return this.$store.getters.getUser; 
-    },
-  },
-  methods: {
-    async updateUserName() {
-      const auth = getAuth();
       const user = auth.currentUser;
+      this.$store.dispatch("updateUser", {
+        ...user,
+        displayName: user.email,
+      });
       console.log(this.$store.getters.getUser);
-
-      if (user && this.newName.trim() && this.parola.trim()) {
-        try {
-          console.log("Vechi nume este:", user.email);
-          const credential = EmailAuthProvider.credential(
-            user.email,
-            this.parola
-          );
-          await reauthenticateWithCredential(user, credential);
-          console.log("User reauthenticated.");
-          const actionCodeSettings = {
-            // URL-ul la care utilizatorul va fi redirecționat după ce confirmă email-ul
-            url: "http://localhost:8080/", // Asigură-te că această pagină există
-            handleCodeInApp: true, // Permite ca link-ul să fie manipulabil în aplicația ta
-          };
-
-          try {
-            await sendEmailVerification(user, actionCodeSettings);
-
-            console.log("Sent");
-
-            await new Promise((resolve) => {
-              alert("Verifică-ți email-ul pentru a continua.");
-              resolve();
-            });
-          } catch (error) {
-            alert(error);
-          }
-
-          await updateEmail(user, this.newName);
-
-          await user.reload();
-          console.log("Noul nume este:", user.email);
-          alert("Username schimbat!");
-          this.$store.dispatch("updateUser", {
-            ...user,
-            displayName: this.newName,
-          });
-          console.log(this.newName);
-        } catch (error) {
-          alert(`Error: ${error.message}`);
-          console.error("Error details:", error);
-        }
-      } else {
-        alert("introdu nume valid!");
-      }
+      return this.$store.getters.getUser;
     },
   },
+  // methods: {
+  //   async updateUserName() {
+  //     const auth = getAuth();
+  //     const user = auth.currentUser;
+  //     console.log(this.$store.getters.getUser);
+
+  //     if (user) {
+  //       try {
+  //         await updateProfile(user, {
+  //           displayName: this.newName,
+  //         });
+  //         console.log("Username-ul a fost actualizat cu succes!");
+  //       } catch (error) {
+  //         console.error("Eroare la actualizarea username-ului:", error.message);
+  //       }
+  //     } else {
+  //       console.log("Niciun utilizator autentificat.");
+  //     }
+  //   },
+
+  //   //   if (user && this.newName.trim() && this.parola.trim()) {
+  //   //     try {
+  //   //       console.log("Vechi nume este:", user.email);
+  //   //       const credential = EmailAuthProvider.credential(
+  //   //         user.email,
+  //   //         this.parola
+  //   //       );
+  //   //       await reauthenticateWithCredential(user, credential);
+  //   //       console.log("User reauthenticated.");
+  //   //       const actionCodeSettings = {
+  //   //         // URL-ul la care utilizatorul va fi redirecționat după ce confirmă email-ul
+  //   //         url: "http://192.168.100.27:8080/", // Asigură-te că această pagină există
+  //   //         handleCodeInApp: true, // Permite ca link-ul să fie manipulabil în aplicația ta
+  //   //       };
+
+  //   //       try {
+  //   //         await sendEmailVerification(user, actionCodeSettings);
+
+  //   //         console.log("Sent");
+
+  //   //         await new Promise((resolve) => {
+  //   //           alert("Verifică-ți email-ul pentru a continua.");
+  //   //           resolve();
+  //   //         });
+  //   //       } catch (error) {
+  //   //         alert(error);
+  //   //       }
+
+  //   //       await updateEmail(user, this.newName);
+
+  //   //       await user.reload();
+  //   //       console.log("Noul nume este:", user.email);
+  //   //       alert("Username schimbat!");
+  //   //       this.$store.dispatch("updateUser", {
+  //   //         ...user,
+  //   //         displayName: this.newName,
+  //   //       });
+  //   //       console.log(this.newName);
+  //   //     } catch (error) {
+  //   //       alert(`Error: ${error.message}`);
+  //   //       console.error("Error details:", error);
+  //   //     }
+  //   //   } else {
+  //   //     alert("introdu nume valid!");
+  //   //   }
+  //   // },
+  // },
 };
 </script>

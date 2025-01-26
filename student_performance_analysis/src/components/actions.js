@@ -36,6 +36,29 @@ export async function addStudent(student) {
   }
 }
 
+
+export async function findAll() {
+  try {
+    const output = [];
+    console.log("in findALL");
+    
+    const q = query(collection(db, "elevi"));
+    const q_snapshot = await getDocs(q);
+
+    if (q_snapshot.empty) {
+      console.log("Empty");
+      throw new Error("Nu s-a gasit nici un student");
+    }
+    q_snapshot.docs.forEach((doc) => {
+      output.push(doc.data());
+    });
+
+    return output;
+  } catch {
+    alert("Imposibil de gasit elevii");
+  }
+}
+
 export async function find(coloana, value) {
   try {
     const output = [];

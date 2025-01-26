@@ -99,6 +99,7 @@ export default {
           console.log("Utilizator logat:", user);
         })
         .catch((error) => {
+          alert("Username sau parola incorecte!")
           console.error("Eroare la autentificare:", error.message);
         });
     },

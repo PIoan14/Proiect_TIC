@@ -180,7 +180,6 @@ export default {
           this.data = data;
 
           console.log(this.data);
-          console.log("++++++++++++++=");
 
           console.log(this.data.length);
           this.data = JSON.parse(JSON.stringify(this.data));

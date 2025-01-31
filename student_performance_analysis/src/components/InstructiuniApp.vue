@@ -91,8 +91,16 @@
               <div class="card m-2" style="width: 30rem">
                 <div class="card-body">
                   <h5 class="card-title">Instructiuni</h5>
-                  <p class="card-text">
-                    Aici vor fi instructiunile aplicatiei pus in detaliu
+                  <h6 class="card-title">...</h6>
+                  <p class="card-text" style="text-align: justify;">
+                    Aplicatia are ca punct de origine pagina Home. De acolo se pot accesa toate paginile secundare (componente Vue), 
+                    fieacre avand rol specific. Prin intermediul acestora, se pot face operatii de stergere, update, afisare, si analizare
+                    grafica (doar pentru note) a studentilor inregistrati in aplicatie, urmand anumite indicatii prezente in fiecare structura.
+                    De asemenea, pagina de status arata numele utilizatorului logat in aplicatie in faza curenta. 
+                    Inainte de logare, in cazul in care nu sunteti inregistrat, introduceti un nume nou (email) si o parola mai lunga de 6 caractere
+                    In cazul in care stergeti contul dvs. , o noua inregistrare este necesara pentru accesul in aplicatie.
+
+
                   </p>
                 </div>
               </div>

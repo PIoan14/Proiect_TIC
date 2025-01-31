@@ -25,7 +25,7 @@
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
-                  Dropdown Link
+                  Dropdown link
                 </a>
                 <ul class="dropdown-menu">
                   <li>
@@ -81,20 +81,22 @@
     <div class="container-fluid">
       <div class="row">
         <div class="sidebar col-md-4 col-sm-4">
-          <div>
-            <p
-              style="
+          <div> 
+            <p  style="
                 padding-top: 150px;
-                padding-right: 50px;
-                font-family: Ink Free;
+                padding-right: 70px;
+                padding-left: 80px;
+                text-align: justify;
+                font-family: Georgia, 'Times New Roman', Times, serif;
+                font-weight: bold;
+                
               "
             >
-              O pagină de intrare într-o aplicație de monitorizare a studenților
-              este punctul de acces principal pentru utilizatori, oferind o
-              interfață simplă și intuitivă. Aceasta include câmpuri pentru
-              autentificare, precum adresa de email și parola, și poate oferi
-              opțiuni suplimentare, cum ar fi "Am uitat parola" sau
-              "Înregistrare" pentru utilizatorii noi.
+              Bine ati venit in pagina principala a aplicatiei de monitorizare a 
+              studentilor! Aici sunt listate optiunile pe care le puteti
+              selecta in vederea efectuarii anumitor operatii precum : Afisarea studentilor,
+              schimbarea anumitor date, stergerea lor, etc. De asemenea, in multe cazuri, pagina de analitice se poate dovedi a fi
+              utilia, in special pentru vizualizarea grafica a performantei studentilor aflati in baza de date.
             </p>
           </div>
           <div class="books_div">
@@ -113,7 +115,7 @@
                   inregistrati in Firebase
                 </p>
                 <li>
-                  <router-link to="/TotiElevii"
+                  <router-link style="font-family: 'Times New Roman', Times, serif;" to="/TotiElevii"
                     >Afiseaza toti Studentii</router-link
                   >
                 </li>
@@ -127,7 +129,7 @@
                   Schimba date despre un anumit student gasit dupa ID. Se poate
                   realiza si stergerea studentului
                 </p>
-                <li><router-link to="/UpdateElev">Modificari</router-link></li>
+                <li><router-link  style="font-family: 'Times New Roman', Times, serif;" to="/UpdateElev">Modificari</router-link></li>
               </div>
             </div>
             <div class="card m-2" style="width: 18rem">
@@ -139,7 +141,7 @@
                   cardul rotativ!
                 </p>
                 <li>
-                  <router-link to="/InstructiuniAplicatie"
+                  <router-link  style="font-family: 'Times New Roman', Times, serif;" to="/InstructiuniAplicatie"
                     >Instructiuni</router-link
                   >
                 </li>
@@ -153,19 +155,19 @@
                   Analizeaza grafic evolutiile studentilor, realizat pe baza
                   notelor obtinute!
                 </p>
-                <li><router-link to="/Analitice">Analitice</router-link></li>
+                <li><router-link  style="font-family: 'Times New Roman', Times, serif;" to="/Analitice">Analitice</router-link></li>
               </div>
             </div>
             <div class="card m-2" style="width: 18rem">
               <div class="card-body">
-                <h5 class="card-title">Setari Profil</h5>
+                <h5 class="card-title">Status</h5>
                 <h6 class="card-subtitle mb-2 text-muted">...</h6>
                 <p class="card-text">
-                  Schimba User Name sau Parola! Acestea vor fii ulterior
-                  utilizate pentru accesarea contului
+                  Observa statusul tau in contextul logarii actuale.
+                  Numele si parola pot fi schimbate din Firebase!
                 </p>
                 <li>
-                  <router-link to="/SetariProfil">Setari Profil</router-link>
+                  <router-link  style="font-family: 'Times New Roman', Times, serif;" to="/SetariProfil">Status</router-link>
                 </li>
               </div>
             </div>
@@ -177,7 +179,7 @@
                   Contul va fi sters din Auth Firebase. Inregistrarea va fi din
                   nou necesara in cazul revenirii in aplicatie
                 </p>
-                <router-link to="/StergeCont">Stergere cont</router-link>
+                <router-link  style="font-family: 'Times New Roman', Times, serif;" to="/StergeCont">Stergere cont</router-link>
                 
               </div>
             </div>
@@ -191,7 +193,7 @@
                   Studentii"
                 </p>
                 <li>
-                  <router-link to="/AdaugaStudent">Adauga student</router-link>
+                  <router-link   style="font-family: 'Times New Roman', Times, serif;" to="/AdaugaStudent">Adauga student</router-link>
                 </li>
               </div>
             </div>
@@ -206,7 +208,7 @@
                
 
                 <li>
-                  <router-link to="/CautaStudent">Cauta elev</router-link>
+                  <router-link  style="font-family: 'Times New Roman', Times, serif;" to="/CautaStudent">Cauta elev</router-link>
                 </li>
               </div>
             </div>

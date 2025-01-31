@@ -30,8 +30,9 @@ body {
   font-size: 40px;
 }
 .card-text {
-  font-family: "72 black";
-  font-weight: bold;
+  font-family: "Times New Roman", Times, serif;;
+  font-weight: italic;
+  text-align:center;
 }
 .card-title {
   font-family: "Times New Roman", Times, serif;
@@ -44,7 +45,10 @@ body {
 .setari {
   padding-left: 50px;
 }
-
+.form-label{
+  font-family: "Ink Free", cursive; 
+  font-weight: bold;
+}
 .card {
   width: 20rem;
   padding-left: 20px;

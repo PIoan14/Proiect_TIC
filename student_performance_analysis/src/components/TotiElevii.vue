@@ -81,18 +81,19 @@
         <div class="col-md-3 col-sm-3 text-center">
           <div>
             <p
-              style="
+            style="
                 padding-top: 150px;
-                padding-right: 50px;
-                font-family: Ink Free;
+                padding-right: 70px;
+                padding-left: 20px;
+                text-align: justify;
+                font-family: Georgia, 'Times New Roman', Times, serif;
+                font-weight: bold;
+                
               "
             >
-              O pagină de intrare într-o aplicație de monitorizare a studenților
-              este punctul de acces principal pentru utilizatori, oferind o
-              interfață simplă și intuitivă. Aceasta include câmpuri pentru
-              autentificare, precum adresa de email și parola, și poate oferi
-              opțiuni suplimentare, cum ar fi "Am uitat parola" sau
-              "Înregistrare" pentru utilizatorii noi.
+              Aici pot fi observati toti studentii din baza de date, fiecare fiind asociat cu un cartonas.
+              Fiecare card contine date partiale despre studentul in cauza. Pentru a observa mai multe detalii despre acestia,
+              va rugam cercetati sectiunea de "Cauta Student"!
             </p>
           </div>
           <div class="books_div">
@@ -134,14 +135,20 @@
               </div>
             </div>
             <div v-if="empty">
-              <p class="card-text">
+              <p class="card-text" style="
+                padding-top: 150px;
+                padding-right: 70px;
+                padding-left: 80px;
+                text-align: justify;
+                font-family: Georgia, 'Times New Roman', Times, serif;
+                font-weight: bold;">
                 Momentan nu exista studenti inregistrati! Adaugati studenti in
                 baza de date! Acestia vor fi afisati aici ;]]]] !
               </p>
             </div>
-            <div v-if="empty" class="books_div">
+            <!-- <div v-if="empty" class="books_div">
               <span class="books">&#128393;</span>
-            </div>
+            </div> -->
           </div>
         </div>
         

@@ -86,7 +86,7 @@
         <div class="main-content col-md-8 col-sm-8">
           <h1 class="BigTitle text-center">Adauga student</h1>
           <div class="row justify-content-center" style="padding-bottom: 15px">
-            <div class="card" style="padding-bottom: 15px; width: 35rem">
+            <div class="card" style="padding-bottom: 25px; width: 35rem">
               <form>
                 <div class="mb-3">
                   <label class="form-label" style="padding-top: 5px"
@@ -97,6 +97,7 @@
                     class="form-control"
                     id="exampleInputEmail1"
                     aria-describedby="emailHelp"
+                    placeholder="Nume si prenume mai lungi de 5 caractere"
                     required
                     minlength="2"
                     autocomplete="off"
@@ -114,6 +115,7 @@
                     type="email"
                     class="form-control"
                     id="exampleInputPassword1"
+                    placeholder="Email (trebuie sa contina @)"
                     required
                     minlength="2"
                     autocomplete="off"
@@ -127,6 +129,7 @@
                   <input
                     class="form-control"
                     id="exampleInputPassword1"
+                    placeholder="ID Secvential"
                     required
                     minlength="2"
                     autocomplete="off"
@@ -135,11 +138,12 @@
                 </div>
                 <div class="mb-3">
                   <label for="exampleInputPassword1" class="form-label"
-                    >Grupa (de la 1 la 5)</label
+                    >Grupa </label
                   >
                   <input
                     class="form-control"
                     id="exampleInputPassword1"
+                    placeholder="Grupa (de la 1 la 5)"
                     required
                     minlength="2"
                     autocomplete="off"
@@ -155,6 +159,7 @@
                     class="form-control"
                     id="exampleInputPassword1"
                     required
+                    placeholder="Varsta elevului"
                     minlength="2"
                     autocomplete="off"
                     v-model="student.varsta"
@@ -167,6 +172,7 @@
                   <input
                     class="form-control"
                     id="exampleInputPassword1"
+                    placeholder="Adresa completa"
                     required
                     minlength="2"
                     autocomplete="off"
@@ -180,6 +186,7 @@
                   <input
                     class="form-control"
                     id="exampleInputPassword1"
+                    placeholder="CNP"
                     required
                     minlength="2"
                     autocomplete="off"
@@ -243,6 +250,12 @@ export default {
     async submitData(event) {
       event.preventDefault();
       console.log(this.student);
+      for(let i of Object.values(this.student)){
+        if(i == ""){
+          alert("Nu se accepta valori nule")
+          return
+        }
+      }
       const token = await this.getToken();
       console.log(`Avem token : ${token}`);
       console.log("Suntem la verificare");
@@ -252,7 +265,7 @@ export default {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, // Adaugă Bearer tokenul
+          Authorization: `Bearer ${token }`, // Adaugă Bearer tokenul
         },
         body: JSON.stringify({ data: "" }),
       })
@@ -262,9 +275,16 @@ export default {
           alert("Se realizeaza adaugarea studentului in Firebase");
         })
         .catch((error) => {
-          console.error("Eroare:", error);
           this.check = 0;
+          console.error("Eroare:", error);
+          alert("Token Invalid!")
+          
         });
+
+      if(this.check ==0 ){
+        
+        return
+      }
 
       try {
         this.student.id_elev = Number(this.student.id_elev);
@@ -294,7 +314,7 @@ export default {
                 this.data = data;
 
                 let id_check = [];
-                alert("stop")
+               
 
                 for (let i = 0; i < this.data.length; i++) {
                   
@@ -302,7 +322,8 @@ export default {
                  
                   
                 }
-                console.log(id_check.sort())
+               
+                console.log(id_check.sort((a, b) => a - b))
 
                 if (this.student.id_elev != id_check[id_check.length - 1] + 1) {
                     this.check = 0;
@@ -312,7 +333,7 @@ export default {
                         id_check[id_check.length - 1]}`)
 
                     throw new Error(
-                      `Id urile trebuie sa fie unice si crescatoare din 1 in 1. Ultimul id folosit este ${
+                      `Id urile trebuie sa fie unice si secventiale. Ultimul id folosit este ${
                         id_check[id_check.length - 1]
                       }`
                     );
@@ -376,6 +397,7 @@ export default {
         this.check = 0;
         alert(error);
       }
+      this.student.cnp = this.student.cnp.toString()
 
       try {
         if (this.student.nume_si_prenume.length < 5) {

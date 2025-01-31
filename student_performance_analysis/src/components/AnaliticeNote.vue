@@ -340,8 +340,8 @@ export default {
       let inpHist = document.getElementById("inpHist");
       let aux = inpHist.value;
       aux = parseInt(aux, 10);
-      if (isNaN(aux) || aux > 4 || aux < 0) {
-        alert("Grupa trebuie sa fie un numar de la 1 la 4");
+      if (isNaN(aux) || aux > 5 || aux < 0) {
+        alert("Grupa trebuie sa fie un numar de la 1 la 5");
       } else {
         this.groupVal = aux;
         console.log("Aicic");

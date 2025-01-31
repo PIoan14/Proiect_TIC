@@ -142,14 +142,16 @@
               </div>
             </div>
             <div v-if="stergereTotala" class="card" style="width: 20rem">
-              <h4>Scrie in chenarul de mai jos cuvantul "stergere", iar apoi apasa submit</h4>
-              <input id="inputStergere" placeholder="...">
-              <button @click="purge" >Submit</button>
+              <h4>
+                Scrie in chenarul de mai jos cuvantul "stergere", iar apoi apasa
+                submit
+              </h4>
+              <input id="inputStergere" placeholder="..." />
+              <button @click="purge">Submit</button>
             </div>
             <div v-if="update" class="card" style="width: 20rem">
               <h3>Alege element de schimbat:</h3>
               <form class="search" id="optiuni">
-                
                 <div>
                   <label
                     ><input
@@ -221,7 +223,6 @@
                     id="materie"
                     name="n"
                   />
-                 
                 </div>
               </form>
               <div></div>
@@ -280,7 +281,8 @@
   </div>
 </template>
 <script>
-import { update, deleteElev,addMark,purge } from "./actions.js";
+import { update, deleteElev, addMark, purge } from "./actions.js";
+import { getAuth } from "firebase/auth";
 export default {
   name: "UpdateElev",
   setup() {},
@@ -289,7 +291,7 @@ export default {
       index_nota: null,
       materie: null,
       stergere: false,
-      stergereTotala : false,
+      stergereTotala: false,
       update: true,
       value: "",
       key: "",
@@ -300,43 +302,79 @@ export default {
     };
   },
   methods: {
+    getToken() {
+      const auth = getAuth();
+      const user = auth.currentUser;
+
+      if (user) {
+        if (user) {
+          return user.getIdToken();
+        } else {
+          return null;
+        }
+      }
+    },
     refresh() {
       setTimeout(() => {
         location.reload();
-      }, 3000)
+      }, 3000);
     },
     modStergere() {
       this.stergere = true;
       this.update = false;
-      this.stergereTotala = false
+      this.stergereTotala = false;
     },
     modUpdate() {
       this.stergere = false;
       this.update = true;
-      this.stergereTotala = false
+      this.stergereTotala = false;
     },
-    modStergeretotala(){
+    modStergeretotala() {
       this.stergere = false;
       this.update = false;
-      this.stergereTotala = true
-
-      
-
+      this.stergereTotala = true;
     },
-    purge(){
-      const st = document.getElementById("inputStergere")
+    async purge() {
+      const st = document.getElementById("inputStergere");
 
-      console.log(st.value)
+      console.log(st.value);
 
-      if(st.value === 'stergere'){
-        alert("toate observatiile din baza de date Firebase vor fi sterse")
-        
-        purge()
-        this.refresh() 
-      }else{
-        alert("cuvant-cheie gresit")
+      if (st.value === "stergere") {
+        alert("toate observatiile din baza de date Firebase vor fi sterse");
+        const token = await this.getToken();
+        console.log(`Avem token : ${token}`);
+        console.log("Suntem la verificare");
+        this.check = 1;
+
+        await fetch("http://localhost:3000/verif-jwt", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // Adaugă Bearer tokenul
+          },
+          body: JSON.stringify({ data: "" }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log("Răspuns de la server:", data);
+          })
+          .catch((error) => {
+            console.error("Eroare:", error);
+            this.check = 0;
+            return;
+          });
+
+        if (this.check == 1) {
+          purge();
+          this.refresh();
+        } else {
+          alert("Token invalid");
+          this.refresh();
+          return;
+        }
+      } else {
+        alert("cuvant-cheie gresit");
       }
-
     },
     async switchnota() {
       this.bifat = true;
@@ -344,7 +382,7 @@ export default {
       document.getElementById("key-id").disabled = false;
       const button = document.getElementById("s_btn");
 
-      button.addEventListener("click", () => {
+      button.addEventListener("click", async () => {
         try {
           const index_nota_dom = document.getElementById("nota-index");
           this.index_nota = index_nota_dom.value;
@@ -366,7 +404,7 @@ export default {
 
           console.log(this.index_nota, this.materie);
           try {
-            if ((this.materie > 3) | (this.materie < 1)) {
+            if (this.materie > 3 || this.materie < 1) {
               throw new Error("Alege o materie de la 1 la 3");
             }
 
@@ -379,30 +417,95 @@ export default {
             if (isNaN(valoare)) {
               throw new Error("Se cere ca nota adaugata sa fie un numar");
             }
+            if (valoare < 1 || valoare > 10) {
+              throw new Error(
+                "Nota trebuie sa fie un numar intre 1 si 10, inclusiv"
+              );
+            }
 
             const materie_string = "materia_" + this.materie;
             console.log(materie_string);
             console.log(id, valoare, materie_string);
-            valoare = Number(valoare)
+            valoare = Number(valoare);
             id = Number(id);
-            
-            addMark(id, this.index_nota, valoare, materie_string)
-            alert("Nota adaugata cu succes!")
-            this.refresh() 
-            
+
+            try {
+              const token = await this.getToken();
+
+              console.log(`Avem token : ${token}`);
+              console.log("Suntem la verificare");
+              this.check = 1;
+
+              await fetch("http://localhost:3000/verif-jwt", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`, // Adaugă Bearer tokenul
+                },
+                body: JSON.stringify({ data: "" }),
+              })
+                .then((response) => response.json())
+                .then((data) => {
+                  console.log("Răspuns de la server:", data);
+                })
+                .catch((error) => {
+                  this.check = 0;
+                  console.error("Eroare:", error);
+                  return;
+                });
+
+              if (this.check == 1) {
+                addMark(id, this.index_nota, valoare, materie_string);
+                alert("Nota adaugata cu succes!");
+              } else {
+                alert("Token invalid");
+                this.refresh();
+                return;
+              }
+              this.refresh();
+            } catch (error) {
+              alert(error);
+              return;
+            }
           } catch (error) {
             alert(error);
+            this.refresh();
           }
         } catch {
           alert("Scrie numarul corespunzator materiei si nota p");
         }
       });
     },
-    schimba() {
+    async schimba() {
+      // const token = await this.getToken();
+      // console.log(`Avem token : ${token}`);
+      // console.log("Suntem la verificare");
+      // this.check = 1;
+
+      // await fetch("http://localhost:3000/verif-jwt", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //     Authorization: `Bearer ${token}`, // Adaugă Bearer tokenul
+      //   },
+      //   body: JSON.stringify({ data: "" }),
+      // })
+      //   .then((response) => response.json())
+      //   .then((data) => {
+      //     document.getElementById("key").disabled = false;
+      //     document.getElementById("key-id").disabled = false;
+      //     console.log("Răspuns de la server:", data);
+
+      //   })
+      //   .catch((error) => {
+      //     console.error("Eroare:", error);
+      //     return
+
+      //   });
+
       this.bifat = false;
 
       const checkList = document.getElementById("optiuni");
-     
 
       checkList.addEventListener("change", (event) => {
         console.log(`Opțiune selectată: ${event.target.value}`);
@@ -411,25 +514,25 @@ export default {
         document.getElementById("key-id").disabled = false;
       });
       const button = document.getElementById("s_btn");
-      button.addEventListener("click", () => {
+      button.addEventListener("click", async () => {
         this.value = document.getElementById("key").value;
-        var test = 0
-        if(this.key == 'email'){
-          if(!this.value.includes("@") ){
-            test = 1
-            alert("Emailul trebuie sa contina @")
-
-
+        var test = 0;
+        if (this.key == "email") {
+          if (!this.value.includes("@")) {
+            test = 1;
+            alert("Emailul trebuie sa contina @");
           }
-          
         }
-        if(this.key == 'nume_si_prenume'){
-          if(this.value.length<5 ){
-            test = 1
-            alert("Structura de nume si prenume trebuie sa fie mai lunga de 5 caractere")
-
+        if (this.K == "cnp") {
+          this.value = this.value.toString();
+        }
+        if (this.key == "nume_si_prenume") {
+          if (this.value.length < 5) {
+            test = 1;
+            alert(
+              "Structura de nume si prenume trebuie sa fie mai lunga de 5 caractere"
+            );
           }
-          
         }
         this.id = document.getElementById("key-id").value;
         this.id = Number(this.id);
@@ -437,18 +540,48 @@ export default {
         this.key = this.key.toString();
         this.value = String(this.value);
         console.log(this.value + "");
-        console.log("+++++++++++++++++");
 
-        if(test == 0){
+        if (test == 0) {
           try {
-          update(this.id, this.value, this.key);
-          
-          alert("Update realizat cu succes !")
-          this.refresh() 
-         
-        } catch (error) {
-          alert(error);
-        }
+            const token = await this.getToken();
+            console.log(`Avem token : ${token}`);
+            console.log("Suntem la verificare");
+            this.check = 1;
+
+            await fetch("http://localhost:3000/verif-jwt", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`, // Adaugă Bearer tokenul
+              },
+              body: JSON.stringify({ data: "" }),
+            })
+              .then((response) => response.json())
+              .then((data) => {
+                document.getElementById("key").disabled = false;
+                document.getElementById("key-id").disabled = false;
+                console.log("Răspuns de la server:", data);
+              })
+              .catch((error) => {
+                console.error("Eroare:", error);
+                this.check = 0;
+              });
+            if (this.check == 1) {
+              console.log(this.id, this.value, this.key);
+              update(this.id, this.value, this.key);
+
+              this.refresh();
+            } else {
+              alert("Token Invalid");
+              this.refresh();
+              return;
+            }
+          } catch (error) {
+            alert(error);
+          }
+        } else {
+          this.refresh();
+          return;
         }
       });
     },
@@ -459,12 +592,43 @@ export default {
         alert("Insereaza un id valid pentru stergere");
       }
       const button = document.getElementById("Buton Delete");
-      button.addEventListener("click", () => {
+      button.addEventListener("click", async () => {
         this.id = Number(document.getElementById("idStergere").value);
+        const token = await this.getToken();
+        console.log(`Avem token : ${token}`);
+        console.log("Suntem la verificare");
+        this.check = 1;
 
-        deleteElev(this.id);
-        this.refresh()
-       
+        await fetch("http://localhost:3000/verif-jwt", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // Adaugă Bearer tokenul
+          },
+          body: JSON.stringify({ data: "" }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log("Răspuns de la server:", data);
+          })
+          .catch((error) => {
+            console.error("Eroare:", error);
+            this.check = 0;
+          });
+
+        if (this.check == 1) {
+         
+            deleteElev(this.id);
+
+            this.refresh();
+         
+           
+          
+        } else {
+          alert("Token invalid");
+          this.refresh();
+          return;
+        }
       });
     },
   },

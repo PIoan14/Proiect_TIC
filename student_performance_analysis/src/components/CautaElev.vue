@@ -87,9 +87,12 @@
                 <h6 class="card-subtitle mb-2 text-muted">...</h6>
 
                 <p class="card-text">
-                  Selecteaza una dintre optiunile de update. Modificarea va fi
-                  facuta aspra unui student cautat pe baza id-ului sau
+                  Selecteaza una dintre optiunile de cautare. Ulterior, scrie
+                  valoarea dupa care droesti sa gasesti un anumit student (sau
+                  grup de studenti, dupa caz). Optiunea "Toti studentii" va
+                  afisa toti elevii.
                 </p>
+
                 <span style="font-size: 100px">&#128393;</span>
               </div>
             </div>
@@ -265,7 +268,9 @@
                       </tr>
                     </tbody>
                   </table>
-                  <button class="btn btn-primary" @click="downloadExcel()">Descarcă tabelul în Excel</button>
+                  <button class="btn btn-primary" @click="downloadExcel()">
+                    Descarcă tabelul în Excel
+                  </button>
                 </div>
               </div>
             </div>
@@ -277,8 +282,11 @@
     </div>
   </div>
 </template>
+
+
 <script>
 import { find, findAll } from "./actions.js";
+import * as XLSX from "xlsx";
 export default {
   name: "CautaElev",
   setup() {},
@@ -299,23 +307,24 @@ export default {
       }, 1000);
     },
     downloadExcel() {
-      // Obține tabelul
-      const table = document.getElementById('tabelStudenti');
+      const table = document.getElementById("tabelStudenti");
 
-      // Creează o variabilă pentru conținutul tabelului
-      let tableHTML = table.outerHTML.replace(/ /g, '%20');
+      // Conversia tabelului HTML într-o matrice de date
+      const workbook = XLSX.utils.table_to_book(table);
 
-      // Creează un fișier Blob care să conțină tabelul în format Excel
-      const dataType = 'application/vnd.ms-excel';
-      const fileName = 'Studenti_Aplicatie_Firebase_Paul.xls'; // Numele fișierului descărcat
+      // Exportul în format Excel (format xlsx)
+      XLSX.writeFile(workbook, "Studenti.xlsx");
 
-      // Creează un link temporar pentru descărcare
-      const downloadLink = document.createElement('a');
-      downloadLink.href = `data:${dataType}, ${tableHTML}`;
-      downloadLink.download = fileName;
+      // let tableHTML = table.outerHTML.replace(/ /g, "%20");
 
-      // Simulează un click pe link pentru a începe descărcarea
-      downloadLink.click();
+      // const dataType = "application/vnd.ms-excel";
+      // const fileName = "Studenti.xlsx";
+
+      // const downloadLink = document.createElement("a");
+      // downloadLink.href = `data:${dataType}, ${tableHTML}`;
+      // downloadLink.download = fileName;
+
+      // downloadLink.click();
     },
 
     schimba() {
@@ -334,6 +343,7 @@ export default {
         this.value = document.getElementById("key").value;
 
         if (this.key == "toti") {
+          document.getElementById("key").disabled = false;
           this.de_afisat = findAll();
           const promise = new Promise((resolve) => {
             setTimeout(() => resolve(this.de_afisat), 1000);
@@ -394,6 +404,7 @@ export default {
               vector = vector.concat(this.de_afisat[i].note.materia_2);
               vector = vector.concat(this.de_afisat[i].note.materia_3);
               console.log(vector);
+              
               var l = vector.length;
               for (let i = 0; i < vector.length; i++) {
                 if (vector[i] == null) {
@@ -408,20 +419,20 @@ export default {
               console.log(this.medie);
               this.de_afisat[i]["Medie"] = this.medie;
               this.medie = 0;
+            }
+            var de_afisat_selectat_pe_medie = [];
 
-              var de_afisat_selectat_pe_medie = [];
+            for (let i = 0; i < this.de_afisat.length; i++) {
+               
 
-              for (let i = 0; i < this.de_afisat.length; i++) {
-                //console.log(this.de_afisat[i].Medie)
-
-                if (this.de_afisat[i].Medie == this.value) {
+              if (this.de_afisat[i].Medie == this.value) {
                   console.log("FOUND cv");
                   de_afisat_selectat_pe_medie =
                     de_afisat_selectat_pe_medie.concat(this.de_afisat[i]);
-                }
               }
-              this.de_afisat = de_afisat_selectat_pe_medie;
             }
+            this.de_afisat = de_afisat_selectat_pe_medie;
+            
           });
 
           this.tabel = true;
@@ -474,6 +485,7 @@ export default {
                 }
               }
               this.medie = this.medie / l;
+              this.medie = Math.round(this.medie)
               console.log(this.medie);
               this.de_afisat[i]["Medie"] = this.medie;
               this.medie = 0;

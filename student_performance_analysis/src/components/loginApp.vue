@@ -31,11 +31,12 @@
                         required
                       />
                       <input
-                        type="text"
+                        
                         class="form-control"
                         placeholder="Parola"
                         aria-label="Username"
                         v-model="password"
+                        type="password"
                         aria-describedby="basic-addon1"
                         required
                       />

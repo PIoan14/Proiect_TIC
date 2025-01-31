@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
       <div class="container-fluid">
-        <a class="navbar-brand" href="#">Setari</a>
+        <a class="navbar-brand" href="#">Status</a>
         <button
           class="navbar-toggler"
           type="button"

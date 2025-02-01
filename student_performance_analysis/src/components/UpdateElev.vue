@@ -191,7 +191,7 @@
                       @change="schimba"
                       type="radio"
                       name="searchOption"
-                      value="Adresa"
+                      value="adresa"
                     />
                     adresa</label
                   >
@@ -350,7 +350,7 @@ export default {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`, // Adaugă Bearer tokenul
+            Authorization: `Bearer ${token}`, 
           },
           body: JSON.stringify({ data: "" }),
         })
@@ -440,7 +440,7 @@ export default {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
-                  Authorization: `Bearer ${token}`, // Adaugă Bearer tokenul
+                  Authorization: `Bearer ${token}`, 
                 },
                 body: JSON.stringify({ data: "" }),
               })
@@ -477,31 +477,7 @@ export default {
       });
     },
     async schimba() {
-      // const token = await this.getToken();
-      // console.log(`Avem token : ${token}`);
-      // console.log("Suntem la verificare");
-      // this.check = 1;
-
-      // await fetch("http://localhost:3000/verif-jwt", {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //     Authorization: `Bearer ${token}`, // Adaugă Bearer tokenul
-      //   },
-      //   body: JSON.stringify({ data: "" }),
-      // })
-      //   .then((response) => response.json())
-      //   .then((data) => {
-      //     document.getElementById("key").disabled = false;
-      //     document.getElementById("key-id").disabled = false;
-      //     console.log("Răspuns de la server:", data);
-
-      //   })
-      //   .catch((error) => {
-      //     console.error("Eroare:", error);
-      //     return
-
-      //   });
+      
 
       this.bifat = false;
 
@@ -523,7 +499,7 @@ export default {
             alert("Emailul trebuie sa contina @");
           }
         }
-        if (this.K == "cnp") {
+        if (this.key == "cnp") {
           this.value = this.value.toString();
         }
         if (this.key == "nume_si_prenume") {

@@ -149,7 +149,7 @@
                       @change="schimba"
                       type="radio"
                       name="searchOption"
-                      value="Adresa"
+                      value="adresa"
                     />
                     adresa</label
                   >

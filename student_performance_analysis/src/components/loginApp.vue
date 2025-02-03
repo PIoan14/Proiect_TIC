@@ -42,7 +42,7 @@
                       />
                     </div>
                     <div>
-                      <button @click= "login" type ="submit" class="btn btn-primary" >Logare</button>
+                      <button @click= "login" type ="button" class="btn btn-primary" >Logare</button>
 
                     </div>
                     <div style="padding-top: 10px;">

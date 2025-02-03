@@ -546,7 +546,7 @@ export default {
               console.log(this.id, this.value, this.key);
               update(this.id, this.value, this.key);
 
-              this.refresh();
+              //this.refresh();
             } else {
               alert("Token Invalid");
               this.refresh();

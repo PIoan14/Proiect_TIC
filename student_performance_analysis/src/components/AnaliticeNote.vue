@@ -225,7 +225,7 @@
                     class="btn btn-dark"
                     style="padding-left: 2px"
                   >
-                    Dark
+                    Submit
                   </button>
                 </div>
               </div>
